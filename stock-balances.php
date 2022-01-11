@@ -14,7 +14,7 @@
         mysqli_query($connect_main, $q_text) or die(mysqli_error($connect_main));
         header("Location: ../stock-balances.php");
     }
-   
+    
     // query for deleting
     if (isset($_GET['del'])) {
         $id = ($_GET['del']);
