@@ -4,7 +4,7 @@ let btn = document.querySelector('#btn-chart');
 let someDiv = document.getElementById('hate');
 btn.onclick = function (e){
     e.preventDefault();
-
+    someDiv.innerHTML = "";
     var requestURL = 'data.json';
     var request = new XMLHttpRequest();
     request.open('GET', requestURL);
