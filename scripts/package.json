@@ -1,0 +1,7 @@
+{
+  "name": "chartist-plugin-legend",
+  "type": "module",
+  "dependencies": {
+    "chartist-plugin-legend": "^0.6.2"
+  }
+}

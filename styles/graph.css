@@ -1,0 +1,95 @@
+.container-chart {
+    width: 100%;
+    margin:20px auto;
+    max-width: 700px;
+  }
+
+  /*График #1*/
+.chart1.ct-chart .ct-series.ct-series-a .ct-line {
+    stroke: #F04D3A;
+    stroke-width: 5px;
+    stroke-dasharray: 5px 5px;
+    animation: dashoffset-seven 200ms infinite linear;
+  }
+  .chart1.ct-chart .ct-series.ct-series-a .ct-point{
+    stroke: #B22819;
+  }
+  
+  .chart1.ct-chart .ct-series.ct-series-b .ct-line {
+    stroke: #4DB543;
+    stroke-width: 5px;
+    stroke-dasharray: 5px 5px;
+    animation: dashoffset-seven 200ms infinite linear;
+  }
+  .chart1.ct-chart .ct-series.ct-series-b .ct-point{
+    stroke: #0FB500;
+  }
+  
+  @keyframes dashoffset-seven {
+    0% {
+      stroke-dashoffset: 7px;
+    }
+    100% {
+      stroke-dashoffset: 0px;
+    }
+  }
+
+
+  .ct-chart {
+      position: relative;
+  }
+
+  .ct-legend {
+      position: relative;
+      z-index: 10;
+      list-style: none;
+      text-align: center;
+  }
+
+  .ct-legend li {
+      position: relative;
+      padding-left: 23px;
+      padding-bottom: 23px;
+      margin-right: 10px;
+      margin-bottom: 6px;
+      cursor: pointer;
+      display: inline-block;
+  }
+
+  .ct-legend li:before {
+      width: 16px;
+      height: 16px;
+      position: absolute;
+      left: 0;
+      content: '';
+      border: 3px solid transparent;
+      border-radius: 2px;
+  }
+  .ct-legend li.inactive:before {
+      background: transparent;
+  }
+  .ct-legend.ct-legend-inside {
+      position: absolute;
+      top: 0;
+      right: 0;
+  }
+  .ct-legend.ct-legend-inside li{
+      display: block;
+      margin: 0;
+  }
+  .ct-legend .ct-series-0:before {
+      background-color: #F04D3A;
+      border-color: #F04D3A;
+  }
+  .ct-legend .ct-series-1:before {
+      background-color: #4DB543;
+      border-color: #0FB500;
+  }
+
+  
+
+
+
+
+
+  
