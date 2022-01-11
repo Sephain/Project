@@ -5,7 +5,7 @@
     $id = $_GET['id'];
 
     $data = mysqli_fetch_all(mysqli_query($connect_main, "SELECT * FROM `orders` WHERE `orders`.`id`='$id'") );
-    print_r($data);
+
 
     if (isset($_POST['bbtn'])){
 

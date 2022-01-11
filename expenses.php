@@ -126,7 +126,7 @@
                         <td> <?= $item[4] ?></td>
                         <td> <?= $item[5] ?>
                             <a href ="?del=<?= $item[0]?>" onclick="return confirm('Вы уверены, что хотите удалить эту запись? <?php echo($item[0]) ?>')"><img src="assets/pictures/any/delete.png" data-bs-toggle="tooltip" data-bs-placement="left" title="Удалить эту запись" alt="" width="20" height="20" class="d-inline-block float-end"></a>
-                            <a href="?id=<?= $item[0] ?>#UpdateModal" data-bs-toggle="modal" data-bs-target=""><img src="assets/pictures/any/edit.png" alt="" width="20" height="20" class="d-inline-block float-end"></a>
+                            <a href="edits/expenses_edit.php?id=<?= $item[0] ?>"><img src="assets/pictures/any/edit.png" alt="" width="20" height="20" class="d-inline-block float-end"></a>
                         </td>
                         </tr>
                       <?php  }

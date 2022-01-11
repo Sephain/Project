@@ -5,18 +5,10 @@
     if (!$_SESSION['user']) { header('Location: ../index.php'); }
     require_once('php/connect-main.php');
     if (isset($_GET['waste_list_id'])) {$waste_list_id = $_GET['waste_list_id']; }
+
     // find this service lsit
-    $find_service_text="SELECT
-    `service_list`.`id` as id,
-	`employee`.`first_name` as name,
-    `clients`.`first_name` as client_name,
-    `service_list`.`date`as ddate
-    FROM 
-        `service_list`
-    INNER JOIN `clients` ON `clients`.`id`=`service_list`.`client_id`
-    INNER JOIN `employee` ON `employee`.`id`=`service_list`.`employee_id`
-    WHERE `service_list`.`id`=$service_list_id";
-    //$service_data = mysqli_fetch_assoc( mysqli_query($connect_main, $find_service_text));
+    $find_waste_list_text="SELECT * FROM `waste_list` WHERE `waste_list`.`id`=$waste_list_id";
+    $waste_list_data = mysqli_fetch_assoc( mysqli_query($connect_main, $find_waste_list_text));
 
     // query for deleting
     if (isset($_GET['del'])) {
@@ -88,8 +80,8 @@
         
         <div class="container-md">
             <div class="mt-4 mb-4">
-                    <h3><p>Бланк утилизации отходов № <?= $service_data['id'] ?></p></h3>
-                    <p>Дата формирования бланка: <?= $service_data['ddate'] ?></p>
+                    <h3><p>Бланк утилизации отходов № <?= $waste_list_data['id'] ?></p></h3>
+                    <p>Дата формирования бланка: <?= $waste_list_data['date'] ?></p>
                     <hr>
                 </div>
             <div class="mt-4 mb-4">
@@ -128,7 +120,7 @@
                         <td> <?= $item[2] ?></td>
                         <td> <?= $item[3] ?>
                             <a href ="?waste_list_id=<?=$waste_list_id?>&del=<?= $item[0]?>" onclick="return confirm('Вы уверены, что хотите удалить эту запись? <?php echo($item[0]) ?>')"><img src="assets/pictures/any/delete.png" data-bs-toggle="tooltip" data-bs-placement="left" title="Удалить эту запись" alt="" width="20" height="20" class="d-inline-block float-end"></a>
-                            <a href="?id=<?= $item[0] ?>#UpdateModal" data-bs-toggle="modal" data-bs-target=""><img src="assets/pictures/any/edit.png" alt="" width="20" height="20" class="d-inline-block float-end"></a>
+                            <a href="edits/waste_edit.php?id=<?= $item[0] ?>"><img src="assets/pictures/any/edit.png" alt="" width="20" height="20" class="d-inline-block float-end"></a>
                         </td>
                         </tr>
                       <?php  }
