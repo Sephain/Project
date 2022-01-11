@@ -20,7 +20,7 @@
         $id = ($_GET['del']);
         mysqli_query($connect_main, "DELETE FROM `stock_balances` WHERE id=$id") or die(mysqli_error($connect_main));
     }
-
+    echo('gittest');
     //query for select
     if (isset($_GET['page'])) { $page = $_GET['page']; }
     else { $page = 1; }
