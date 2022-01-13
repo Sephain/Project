@@ -66,7 +66,7 @@
     
 
     // pagination =)
-    $count_query = mysqli_query($connect_main, "SELECT COUNT(*) as count FROM `orders_content`") or die(mysqli_error($connect_main));
+    $count_query = mysqli_query($connect_main, "SELECT COUNT(*) as count FROM `orders_content` WHERE `orders_id`=$order_id") or die(mysqli_error($connect_main));
     $count = mysqli_fetch_assoc($count_query)['count'];
     $pagesCount = ceil($count / $recordOnPage);
 

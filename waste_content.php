@@ -30,7 +30,7 @@
     
 
     // pagination =)
-    $count_query = mysqli_query($connect_main, "SELECT COUNT(*) as count FROM `waste`") or die(mysqli_error($connect));
+    $count_query = mysqli_query($connect_main, "SELECT COUNT(*) as count FROM `waste` WHERE `waste_list_id`=$waste_list_id") or die(mysqli_error($connect_main));
     $count = mysqli_fetch_assoc($count_query)['count'];
     $pagesCount = ceil($count / $recordOnPage);
 
@@ -135,7 +135,7 @@
         <div class="container-md pagin-at">
             <ul class="pagination justify-content-center ">
                 <?php for ($i = 1; $i <= $pagesCount; $i++) { 
-                    echo "<li class=\"page-item\"><a class=\"page-link\" href =\"?page=$i\">$i</a></li> ";
+                    echo "<li class=\"page-item\"><a class=\"page-link\" href =\"?waste_list_id=$waste_list_id&page=$i\">$i</a></li> ";
                 } ?>
             </ul>
         </div>

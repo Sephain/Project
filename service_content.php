@@ -37,7 +37,7 @@
     if (isset($_GET['page'])) { $page = $_GET['page']; }
     else { $page = 1; }
 
-    $recordOnPage = 15; // количество записей на странице
+    $recordOnPage = 10; // количество записей на странице
     $startFrom = ($page - 1) * $recordOnPage;
     $select_text = "SELECT
         `service_provision`.`id` as id,
@@ -57,7 +57,7 @@
     
 
     // pagination =)
-    $count_query = mysqli_query($connect_main, "SELECT COUNT(*) as count FROM `service_provision`") or die(mysqli_error($connect));
+    $count_query = mysqli_query($connect_main, "SELECT COUNT(*) as count FROM `service_provision` WHERE `service_list_id`=$service_list_id") or die(mysqli_error($connect_main));
     $count = mysqli_fetch_assoc($count_query)['count'];
     $pagesCount = ceil($count / $recordOnPage);
 
@@ -77,7 +77,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles/stl.css">   
-    <title>Оказание услуг</title>
+    <title>Бланк оказания услуг</title>
 </head>
 <body>
 
@@ -140,7 +140,7 @@
                                 <th>№</th>
                                 <th>Название услуги</th>
                                 <th>Количество</th>
-                                <th>Цена за штуку</th>
+                                <th>Цена за единицу</th>
                                 <th>Общая цена</th>
                             </tr>
                         </thead>");
@@ -171,7 +171,7 @@
         <div class="container-md pagin-at">
             <ul class="pagination justify-content-center ">
                 <?php for ($i = 1; $i <= $pagesCount; $i++) { 
-                    echo "<li class=\"page-item\"><a class=\"page-link\" href =\"?page=$i\">$i</a></li> ";
+                    echo "<li class=\"page-item\"><a class=\"page-link\" href =\"?service_list_id=$service_list_id&page=$i\">$i</a></li> ";
                 } ?>
             </ul>
         </div>
@@ -219,7 +219,7 @@
     </div>
 
     <!-- НОВАЯ УСЛУГА -->
-        <div class="modal fade" id="ServiceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="ServiceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
