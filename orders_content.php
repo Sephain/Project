@@ -144,14 +144,11 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-2 mb-4">
+                    <div class="col-md-5 mb-4">
                         <a data-bs-toggle="modal" data-bs-target="#exampleModal"><button class="btn btn-primary">Добавить запись</button></a>
+                        <a href="orders.php"><button class="btn btn-success">Закончить формирование заказа</button></a>
                     </div>
-                    <div class="col-md-4 mb-4">
-                        <form action="orders.php" method="POST">
-                            <button class="btn btn-success">Закончить формирование заказа</button>
-                        </form>
-                    </div>
+                            
                 </div>
                       
                     <?php 
@@ -238,7 +235,7 @@
                     </div>
                     <input type="text" name="order_id" visibility: hidden value="<?=$order_id?>">
                     <button type="submit" class="btn btn-primary" name="bbtn" id="btn_add">Добавить</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Закрыть</button>
                     <div class="warn" id="warning"></div>
                 </form>
             </div>

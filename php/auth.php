@@ -16,28 +16,7 @@
         $_SESSION['user'] = [
             "position" => $user['position']
         ];
-        switch($_SESSION['user']['position']){
-            case 1: // администратор
-                header('Location: ../employee.php');
-                break;
-
-            case 2: // главный инженер
-                header('Location: ../employee.php');
-                break;
-            
-            case 3: // кладовщик
-                header('Location: ../stock-balances.php');
-                break;
-
-            case 4: // кассир
-                header('Location: ../service.php');
-                break;
-
-            case 5: // бухгалтер
-                header('Location: ../reports.php');
-                break;
-
-        }
+        header('Location: ../mainpage.php');
         
     }
     else {

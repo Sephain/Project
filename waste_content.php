@@ -86,13 +86,9 @@
                 </div>
             <div class="mt-4 mb-4">
                 <div class="row">
-                    <div class="col-md-2 mb-4">
+                    <div class="col-md-5 mb-4">
                         <a data-bs-toggle="modal" data-bs-target="#exampleModal"><button class="btn btn-primary">Добавить запись</button></a>
-                    </div>
-                    <div class="col-md-4 mb-4">
-                        <form action="waste_list.php" method="POST">
-                            <button class="btn btn-success">Закончить формирование бланка</button>
-                        </form>
+                        <a href="waste_list.php"><button class="btn btn-success">Закончить формирование бланка</button></a>
                     </div>
                 </div>
                 
