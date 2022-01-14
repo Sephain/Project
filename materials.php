@@ -12,13 +12,13 @@
 
         $q_text = "INSERT INTO `materials` (`name`) VALUES ('$newm')";
         mysqli_query($connect_main, $q_text) or die(mysqli_error($connect_main));
-        header("Location: ../stock-balances.php");
+        header("Location: ../materials.php");
     }
     
     // query for deleting
     if (isset($_GET['del'])) {
         $id = ($_GET['del']);
-        mysqli_query($connect_main, "DELETE FROM `stock_balances` WHERE id=$id") or die(mysqli_error($connect_main));
+        mysqli_query($connect_main, "DELETE FROM `materials` WHERE id=$id") or die(mysqli_error($connect_main));
     }
     
     //query for select
@@ -27,20 +27,14 @@
 
     $recordOnPage = 10; // количество записей на странице
     $startFrom = ($page - 1) * $recordOnPage;
-    $select_text="SELECT `stock_balances`.`id` AS 'id', `materials`.`name` AS 'material_name', `stock_balances`.`count` AS 'count'
-    FROM 
-	    `materials` INNER JOIN `stock_balances`
-    ON 
-	    `materials`.`id`=`stock_balances`.`material_id`
-    -- WHERE `stock_balances`.`count` != 0
-    ORDER BY `stock_balances`.`id`
+    $select_text="SELECT * FROM `materials`
     LIMIT $startFrom,$recordOnPage";
     $select_query = mysqli_query($connect_main, $select_text);
     $new = mysqli_fetch_all($select_query);
     
 
     // pagination =)
-    $count_query = mysqli_query($connect_main, "SELECT COUNT(*) as count FROM `stock_balances`") or die(mysqli_error($connect));
+    $count_query = mysqli_query($connect_main, "SELECT COUNT(*) as count FROM `materials`") or die(mysqli_error($connect));
     $count = mysqli_fetch_assoc($count_query)['count'];
     $pagesCount = ceil($count / $recordOnPage);
 
@@ -91,16 +85,15 @@
     <section>
         <div class="container-md">
             <div class="mt-4 mb-4">
-                <h3><p>Раздел "Материалы в наличии"</p></h3>
+                <h3><p>Раздел "Список материалов"</p></h3>
                 <p class="fst-italic">Здесь представлен список всех материалов, которыми располагает фотоцентр на данный момент. </P>
                 <p class="fst-italic">Обратите внимание, если на складе будет недостаточно какого-го либо материала или он вовсе зкончился, рядом с ним появится характерный значок восклицательного знака.</p>
                 <hr>
             </div>
             <div class="mt-4 mb-4">
                 <div class="row">
-                    <div class="col-md-6 mb-4">
-                        <a data-bs-toggle="modal" data-bs-target="#exampleModal"><button class="btn btn-primary">Добавить материал</button></a>
-                        <a href="materials.php"><button class="btn btn-secondary">Просмотреть список материалов</button></a>
+                    <div class="col-md-4 mb-4">
+                        <a data-bs-toggle="modal" data-bs-target="#materialModal"><button class="btn btn-primary">Добавить новый материал</button></a>
                     </div>
                     
                 </div>
@@ -114,7 +107,6 @@
                             <tr>
                                 <th>№</th>
                                 <th>Материал</th>
-                                <th>Количество</th>
                             </tr>
                         </thead>");
                     }
@@ -125,10 +117,9 @@
                         foreach($new as $item){ ?>
                         <tr>
                         <td> <?= $item[0] ?></td>
-                        <td> <?php if ($item[2]<10) {echo("<span class=\"fa fa-exclamation-circle text-danger float-end\" title=\"Нехватка материала!\"></span>");} echo($item[1]); ?></td>
-                        <td> <?php echo($item[2]); ?>
+                        <td> <?php echo($item[1]); ?>
                             <a href ="?del=<?= $item[0]?>" onclick="return confirm('Вы уверены, что хотите удалить эту запись? <?php echo($item[0]) ?>')"><img src="assets/pictures/any/delete.png" data-bs-toggle="tooltip" data-bs-placement="left" title="Удалить эту запись" alt="" width="20" height="20" class="d-inline-block float-end"></a>
-                            <a href="edits/stock_balance_edit.php?id=<?= $item[0] ?>"><img src="assets/pictures/any/edit.png" alt="" width="20" height="20" class="d-inline-block float-end"></a>
+                            <a href="edits/material_edit.php?id=<?= $item[0] ?>"><img src="assets/pictures/any/edit.png" alt="" width="20" height="20" class="d-inline-block float-end"></a>
                         </td>
                         </tr>
                       <?php  }
@@ -148,45 +139,9 @@
         </div>
     </footer>
 
-    <!-- ADD Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Добавление нового материала</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body"> 
-                <form action="processing/stock-add.php" method="POST" id="my_form">
-                    <div class="mb-3">
-                        <label for="one" class="form-label">Выберите материал</label>
-                        <select class="form-select" aria-label="Default select example" name="material" id="one">
-                            <?php 
-                                $emp_q = mysqli_query($connect_main, "SELECT * FROM `materials`");
-                                $res = mysqli_fetch_all($emp_q);
-                                foreach ($res as $item) {
-                                    echo("<option value=$item[0]>$item[1]</option>");
-                                }
-                            ?>
-                        </select>
-                        <a href="" class="form-text" data-bs-toggle="modal" data-bs-target="#MaterialModal" data-bs-dismiss="modal">Добавить новый материал</a>
-                    </div>
-                    <div class="mb-3">
-                        <label for="two" class="form-label">Количество</label>
-                        <input class="form-control" type="text" id="two" name="count">                   
-                    </div>
-                    <button type="submit" class="btn btn-primary" name="bbtn" id="btn_add">Добавить</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                    <div class="warn" id="warning"></div>
-                </form>
-            </div>
-            </div>
-        </div>
-    </div>
-
 
         <!-- НОВЫЙ МАТЕРИАЛ -->
-    <div class="modal fade" id="MaterialModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="materialModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">

@@ -13,7 +13,7 @@
     `vendor`.`name` AS vendor,
     `orders`.`date` AS ddate,
     `orders`.`receipt_date` AS rddate,
-    CONCAT(`employee`.`first_name`, ' ',`employee`.`last_name`) AS emp
+    CONCAT(`employee`.`last_name`, ' ',`employee`.`first_name`, ' ', `employee`.`middle_name`) AS emp
     FROM
         `orders`
     INNER JOIN `vendor` ON `vendor`.`id`=`orders`.`vendor_id`

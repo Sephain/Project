@@ -9,17 +9,18 @@
     if (isset($_POST['client-add'])) {
         $name = $_POST['name'];
         $last_name = $_POST['last_name'];
+        $m_name = $_POST['middle_name'];
         $contacts = $_POST['contacts'];
 
-        $q_text = "INSERT INTO `clients` (`first_name`, `last_name`, `contacts`) VALUES ('$name', '$last_name', '$contacts')";
+        $q_text = "INSERT INTO `clients` (`first_name`, `last_name`, `middle_name`, `contacts`) VALUES ('$name', '$last_name', '$m_name', '$contacts')";
         mysqli_query($connect_main, $q_text) or die(mysqli_error($connect_main));
-        header("Location: ../service.php");
+        header("Location: ../clients.php");
     }
     
     // query for deleting
     if (isset($_GET['del'])) {
         $id = ($_GET['del']);
-        mysqli_query($connect_main, "DELETE FROM `service_list` WHERE id=$id") or die(mysqli_error($connect_main));
+        mysqli_query($connect_main, "DELETE FROM `clients` WHERE id=$id") or die(mysqli_error($connect_main));
     }
 
     //query for select
@@ -28,16 +29,8 @@
 
     $recordOnPage = 10; // количество записей на странице
     $startFrom = ($page - 1) * $recordOnPage;
-    $select_text = "SELECT
-    `service_list`.`id` as id,
-	CONCAT(`employee`.`last_name`, ' ', `employee`.`first_name`, ' ',`employee`.`middle_name`) as name,
-    CONCAT(`clients`.`last_name`, ' ', `clients`.`first_name`, ' ', `clients`.`middle_name`) as client_name,
-    `service_list`.`date`as ddate
-    FROM 
-        `service_list`
-    INNER JOIN `clients` ON `clients`.`id`=`service_list`.`client_id`
-    INNER JOIN `employee` ON `employee`.`id`=`service_list`.`employee_id`
-    ORDER BY `service_list`.`id`
+    $select_text = "SELECT * FROM `clients`
+    ORDER BY `id`
     LIMIT $startFrom,$recordOnPage";
 
     $select_query = mysqli_query($connect_main, $select_text) or die(mysqli_error($connect_main));
@@ -45,7 +38,7 @@
     
 
     // pagination =)
-    $count_query = mysqli_query($connect_main, "SELECT COUNT(*) as count FROM `service_list`") or die(mysqli_error($connect));
+    $count_query = mysqli_query($connect_main, "SELECT COUNT(*) as count FROM `clients`") or die(mysqli_error($connect_main));
     $count = mysqli_fetch_assoc($count_query)['count'];
     $pagesCount = ceil($count / $recordOnPage);
 
@@ -62,11 +55,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles/stl.css">   
-    <title>Оказание услуг</title>
+    <title>Клиенты</title>
 </head>
 <body>
 
-<?php 
+    <?php 
             switch($_SESSION['user']['position']){
                 case 1: // администратор
                     include('navbars/engineer.php');
@@ -95,21 +88,18 @@
     <section>
         <div class="container-md">
             <div class="mt-4 mb-4">
-                <h3><p>Раздел "Оказание услуг"</p></h3>
+                <h3><p>Раздел "Клиенты"</p></h3>
                 <p class="fst-italic">Здесь представлены бланки оказания услуг нашим клиентам. </p>
-                <p class="fst-italic">Вы можете добавить новый бланк в список, либо ознакомиться и отредактировать уже существующий.</p>
+                <p class="fst-italic">Вы можете добавить ноывй бланк в список, либо ознакомиться и отредактировать уже существующий.</p>
                 <hr>
             </div>
             <div class="mt-4 mb-4">
                 <div class="row">
                     <div class="col-md-4 mb-4">
-                        <a data-bs-toggle="modal" data-bs-target="#exampleModal"><button class="btn btn-primary">Добавить запись</button></a>
-                        <a href="clients.php"><button class="btn btn-secondary">Просмотреть список клиентов</button></a>
+                        <a data-bs-toggle="modal" data-bs-target="#clientModal"><button class="btn btn-primary">Добавить нового клиента</button></a>
                     </div>
 
                 </div>
-                
-
                     
                     <?php
                     if ($pagesCount != 0){
@@ -117,9 +107,8 @@
                         <thead>
                             <tr>
                                 <th>№</th>
-                                <th>ФИО сотрудника</th>
-                                <th>ФИО клиента</th>
-                                <th>Дата</th>
+                                <th>ФИО</th>
+                                <th>Контакты</th>
                             </tr>
                         </thead>");
                     }
@@ -129,12 +118,10 @@
                         foreach($new as $item){ ?>
                         <tr>
                         <td> <?= $item[0] ?></td>
-                        <td> <?= $item[1] ?></td>
-                        <td> <?= $item[2] ?></td>
-                        <td> <?= $item[3] ?>
+                        <td> <?php echo($item[2]. ' '.$item[1].' '.$item[3]); $item[1] ?></td>
+                        <td> <?= $item[4] ?>
                             <a href ="?del=<?= $item[0]?>" onclick="return confirm('Вы уверены, что хотите удалить эту запись? <?php echo($item[0]) ?>')"><img src="assets/pictures/any/delete.png" data-bs-toggle="tooltip" data-bs-placement="left" title="Удалить эту запись" alt="" width="20" height="20" class="d-inline-block float-end"></a>
-                            <a href="edits/service_edit.php?id= <?=$item[0] ?>"><img src="assets/pictures/any/edit.png" alt="" width="20" height="20" class="d-inline-block float-end"></a>
-                            <a href="service_content.php?service_list_id=<?= $item[0] ?>"><img src="assets/pictures/any/view.png" title="Просмотреть содержание" alt="" width="20" height="20" class="d-inline-block float-end"></a>
+                            <a href="edits/clients_edit.php?id= <?=$item[0] ?>"><img src="assets/pictures/any/edit.png" alt="" width="20" height="20" class="d-inline-block float-end"></a>
                         </td>
                         </tr>
                       <?php  }
@@ -155,56 +142,8 @@
         </div>
     </footer>
 
-    <!-- ADD Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Добавление оказанной услуги</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body"> 
-                <form action="processing/service-add.php" method="POST" id="my_form">
-                    <div class="mb-3">
-                        <label for="one" class="form-label">Сотрудник</label>
-                        <select class="form-select" aria-label="Default select example" name="Employee" id="one">
-                            <?php 
-                                $emp_q = mysqli_query($connect_main, "SELECT * FROM `employee` INNER JOIN `position` ON `employee`.`position`=`position`.`id` WHERE `employee`.`position`='4' OR `employee`.`position`='6'");
-                                $res = mysqli_fetch_all($emp_q);
-                                foreach ($res as $item) {
-                                    echo("<option value=$item[0]>$item[1] $item[2] - $item[8]</option>");
-                                }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="two" class="form-label">Выберите клиента</label>
-                        <select class="form-select" aria-label="Default select example" name="Client" id="two">
-                            <?php 
-                                $emp_q = mysqli_query($connect_main, "SELECT * FROM `clients`");
-                                $res = mysqli_fetch_all($emp_q);
-                                foreach ($res as $item) {
-                                    echo("<option value=$item[0]>$item[1] $item[2]</option>");
-                                }
-                            ?>
-                        </select>
-                        <a href="" class="form-text" data-bs-toggle="modal" data-bs-target="#ClientModal" data-bs-dismiss="modal">Добавить нового клиента</a>
-                    </div>
-                    <div class="mb-3">
-                        <label for="three" class="form-label">Дата оказания услуги</label>
-                        <input class="form-control" type="date" id="three" name="Date">                   
-                    </div>
-                    <button type="submit" class="btn btn-primary" name="bbtn" id="btn_add">Добавить</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Закрыть</button>
-                    <div class="warn" id="warning"></div>
-                </form>
-            </div>
-            </div>
-        </div>
-    </div>
-
     <!-- НОВЫЙ КЛИЕНТ -->
-    <div class="modal fade" id="ClientModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
@@ -220,6 +159,10 @@
                     <div class="mb-3">
                         <label for="two" class="form-label">Фамилия</label>
                         <input class="form-control" type="text" id="two" name="last_name">                   
+                    </div>
+                    <div class="mb-3">
+                        <label for="mid" class="form-label">Отчество</label>
+                        <input class="form-control" type="text" id="mid" name="middle_name">                   
                     </div>
                     <div class="mb-3">
                         <label for="three" class="form-label">Контактный телефон</label>

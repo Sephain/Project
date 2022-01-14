@@ -5,11 +5,12 @@
     if (!$_SESSION['user']) { header('Location: ../index.php'); }
     require_once('php/connect-main.php');
     if (isset($_GET['service_list_id'])) {$service_list_id = $_GET['service_list_id']; }
+
     // find this service lsit
     $find_service_text="SELECT
     `service_list`.`id` as id,
-	`employee`.`first_name` as name,
-    `clients`.`first_name` as client_name,
+	CONCAT(`employee`.`last_name`, ' ', `employee`.`first_name`, ' ',`employee`.`middle_name`) as name,
+    CONCAT(`clients`.`last_name`, ' ', `clients`.`first_name`, ' ', `clients`.`middle_name`) as client_name,
     `service_list`.`date`as ddate
     FROM 
         `service_list`
@@ -112,10 +113,10 @@
         <div class="container-md">
             <div class="mt-4 mb-4">
                     <h3><p>Бланк оказания услуг № <?= $service_data['id'] ?></p></h3>
-                    <p>Сотрудник, оказавший услугу: <?= $service_data['name'] ?></p>
-                    <p>Клиент: <?= $service_data['client_name'] ?></p>
+                    <p>ФИО сотрудника, оказавший услугу: <?= $service_data['name'] ?></p>
+                    <p>ФИО клиента: <?= $service_data['client_name'] ?></p>
                     <p>Дата оказания услуг: <?= $service_data['ddate'] ?></p>
-                    <p>Общая стоимость: <b><?=$_SESSION['cost']?></b>   </p>
+                    <p>Общая стоимость: <b><?=$_SESSION['cost']?></b></p>
                     <hr>
                 </div>
             <div class="mt-4 mb-4">

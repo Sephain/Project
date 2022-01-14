@@ -4,13 +4,14 @@
     require_once('../php/connect.php');
     $name = $_POST['Name'];
     $l_name = $_POST['Last_name'];
+    $m_name = $_POST['Middle_name'];
     $email = $_POST['email'];
     $adress = $_POST['Adress'];
     $contact = $_POST['Contacts'];
     $position = $_POST['Position'];
     $salary = $_POST['Salary'];
 
-    $q_text = "INSERT INTO `employee` (`first_name`, `last_name`, `adress`, `contacts`, `position`, `salary`) VALUES ('$name', '$l_name', '$adress', '$contact', '$position', '$salary')";
+    $q_text = "INSERT INTO `employee` (`first_name`, `last_name`, `middle_name`, `adress`, `contacts`, `position`, `salary`) VALUES ('$name', '$l_name', '$m_name', '$adress', '$contact', '$position', '$salary')";
     mysqli_query($connect_main, $q_text) or die(mysqli_error($connect_main));
 
     if ($position <= 5){

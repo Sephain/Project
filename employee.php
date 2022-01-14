@@ -16,11 +16,11 @@
     //query for select
     if (isset($_GET['page'])) { $page = $_GET['page']; }
     else { $page = 1; }
-
     $recordOnPage = 15; // количество записей на странице
     $startFrom = ($page - 1) * $recordOnPage;
-    $select_query = mysqli_query($connect_main, "SELECT * FROM `employee` INNER JOIN `position` ON `employee`.`position`=`position`.`id` LIMIT $startFrom,$recordOnPage");
+    $select_query = mysqli_query($connect_main, "SELECT * FROM `employee` INNER JOIN `position` ON `employee`.`position`=`position`.`id` LIMIT $startFrom,$recordOnPage") or die($connect_main);
     $new = mysqli_fetch_all($select_query);
+    //print_r($new);
     
     // pagination =)
     $count_query = mysqli_query($connect_main, "SELECT COUNT(*) as count FROM `employee`") or die(mysqli_error($connect));
@@ -67,8 +67,7 @@
                             <thead>
                                 <tr>
                                     <th>№</th>
-                                    <th>Имя</th>
-                                    <th>Фамилия</th>
+                                    <th>ФИО</th>
                                     <th>Адрес</th>
                                     <th>Контакты</th>
                                     <th>Должность</th>
@@ -82,12 +81,11 @@
                         foreach($new as $item){ ?>
                         <tr>
                         <td> <?= $item[0] ?></td>
-                        <td> <?= $item[1] ?></td>
-                        <td> <?= $item[2] ?></td>
-                        <td> <?= $item[3] ?></td>
+                        <td> <?php echo($item[2] . ' ' . $item[1] . ' ' . $item[3]); ?></td>
                         <td> <?= $item[4] ?></td>
-                        <td> <?= $item[8] ?></td>
-                        <td> <?= $item[6] ?>
+                        <td> <?= $item[5] ?></td>
+                        <td> <?= $item[9] ?></td>
+                        <td> <?= $item[7] ?>
                             <a href ="?del=<?= $item[0]?>" onclick="return confirm('Вы уверены, что хотите удалить эту запись? <?php echo($item[0]) ?>')"><img src="assets/pictures/any/delete.png" data-bs-toggle="tooltip" data-bs-placement="left" title="Удалить эту запись" alt="" width="20" height="20" class="d-inline-block float-end"></a>
                             <a href="edits/employee_edit.php?id=<?= $item[0] ?>"><img src="assets/pictures/any/edit.png" alt="" width="20" height="20" class="d-inline-block float-end"></a>
                         </td>
@@ -130,6 +128,10 @@
                     <div class="mb-3">
                         <label for="two" class="form-label">Фамилия</label>
                         <input class="form-control" type="text" id="two" name="Last_name">                   
+                    </div>
+                    <div class="mb-3">
+                        <label for="middle" class="form-label">Отчество</label>
+                        <input class="form-control" type="text" id="middle" name="Middle_name">                   
                     </div>
                     <div class="mb-3">
                         <label for="three" class="form-label">Email</label>
