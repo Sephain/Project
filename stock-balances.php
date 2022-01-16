@@ -9,8 +9,9 @@
     //add new mat
     if (isset($_POST['newmaterial'])) {
         $newm = $_POST['newmaterial'];
+        $newc = $_POST['newcategory'];
 
-        $q_text = "INSERT INTO `materials` (`name`) VALUES ('$newm')";
+        $q_text = "INSERT INTO `materials` (`name`, `category_id`) VALUES ('$newm','$newc')";
         mysqli_query($connect_main, $q_text) or die(mysqli_error($connect_main));
         header("Location: ../stock-balances.php");
     }
@@ -27,12 +28,16 @@
 
     $recordOnPage = 10; // количество записей на странице
     $startFrom = ($page - 1) * $recordOnPage;
-    $select_text="SELECT `stock_balances`.`id` AS 'id', `materials`.`name` AS 'material_name', `stock_balances`.`count` AS 'count'
-    FROM 
-	    `materials` INNER JOIN `stock_balances`
-    ON 
-	    `materials`.`id`=`stock_balances`.`material_id`
-    -- WHERE `stock_balances`.`count` != 0
+    $select_text="SELECT
+    `stock_balances`.`id` as id,
+    `materials`.`name` AS name,
+    `category`.`name` AS cat_name,
+    `stock_balances`.`count` AS count
+    FROM
+        `materials`
+    INNER JOIN `stock_balances` ON `materials`.`id` = `stock_balances`.`material_id`
+    INNER JOIN `category` ON `category`.`id`=`materials`.`category_id`
+    WHERE `materials`.`category_id` != 1
     ORDER BY `stock_balances`.`id`
     LIMIT $startFrom,$recordOnPage";
     $select_query = mysqli_query($connect_main, $select_text);
@@ -92,6 +97,7 @@
         <div class="container-md">
             <div class="mt-4 mb-4">
                 <h3><p>Раздел "Материалы в наличии"</p></h3>
+
                 <p class="fst-italic">Здесь представлен список всех материалов, которыми располагает фотоцентр на данный момент. </P>
                 <p class="fst-italic">Обратите внимание, если на складе будет недостаточно какого-го либо материала или он вовсе зкончился, рядом с ним появится характерный значок восклицательного знака.</p>
                 <hr>
@@ -114,6 +120,7 @@
                             <tr>
                                 <th>№</th>
                                 <th>Материал</th>
+                                <th>Тип</th>
                                 <th>Количество</th>
                             </tr>
                         </thead>");
@@ -125,8 +132,9 @@
                         foreach($new as $item){ ?>
                         <tr>
                         <td> <?= $item[0] ?></td>
-                        <td> <?php if ($item[2]<10) {echo("<span class=\"fa fa-exclamation-circle text-danger float-end\" title=\"Нехватка материала!\"></span>");} echo($item[1]); ?></td>
-                        <td> <?php echo($item[2]); ?>
+                        <td> <?php if ($item[3]<10) {echo("<span class=\"fa fa-exclamation-circle text-danger float-end\" title=\"Нехватка материала!\"></span>");} echo($item[1]); ?></td>
+                        <td> <?= $item[2] ?></td>
+                        <td> <?php echo($item[3]); ?>
                             <a href ="?del=<?= $item[0]?>" onclick="return confirm('Вы уверены, что хотите удалить эту запись? <?php echo($item[0]) ?>')"><img src="assets/pictures/any/delete.png" data-bs-toggle="tooltip" data-bs-placement="left" title="Удалить эту запись" alt="" width="20" height="20" class="d-inline-block float-end"></a>
                             <a href="edits/stock_balance_edit.php?id=<?= $item[0] ?>"><img src="assets/pictures/any/edit.png" alt="" width="20" height="20" class="d-inline-block float-end"></a>
                         </td>
@@ -162,7 +170,13 @@
                         <label for="one" class="form-label">Выберите материал</label>
                         <select class="form-select" aria-label="Default select example" name="material" id="one">
                             <?php 
-                                $emp_q = mysqli_query($connect_main, "SELECT * FROM `materials`");
+                                $emp_q = mysqli_query($connect_main, "SELECT
+                                *
+                            FROM
+                                `materials`
+                            LEFT JOIN `stock_balances` ON `materials`.`id` = `stock_balances`.`material_id`
+                            INNER JOIN `category` ON `category`.`id`=`materials`.`category_id`
+                            WHERE `stock_balances`.`id` IS NULL AND `category`.`id` != 1");
                                 $res = mysqli_fetch_all($emp_q);
                                 foreach ($res as $item) {
                                     echo("<option value=$item[0]>$item[1]</option>");
@@ -198,6 +212,18 @@
                     <div class="mb-3">
                         <label for="two" class="form-label">Название материала</label>
                         <input class="form-control" type="text" id="two" name="newmaterial">                   
+                    </div>
+                    <div class="mb-3">
+                        <label for="one" class="form-label">Категория</label>
+                        <select class="form-select" aria-label="Default select example" name="newcategory" id="one">
+                            <?php 
+                                $emp_q = mysqli_query($connect_main, "SELECT * FROM `category` WHERE `id` != 1");
+                                $res = mysqli_fetch_all($emp_q);
+                                foreach ($res as $item) {
+                                    echo("<option value=$item[0]>$item[1]</option>");
+                                }
+                            ?>
+                        </select>                        
                     </div>
                     <button type="submit" class="btn btn-primary" name="bbtn-add">Добавить</button>
                 </form>

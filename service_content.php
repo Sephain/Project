@@ -7,8 +7,8 @@
     if (isset($_GET['service_list_id'])) {$service_list_id = $_GET['service_list_id']; }
 
     // price lists
-    $service_price = mysqli_fetch_all(mysqli_query($connect_main, "SELECT * FROM `service` WHERE `category_id`=1"));
-    $goods_price = mysqli_fetch_all(mysqli_query($connect_main, "SELECT * FROM `service` WHERE `category_id`=2"));
+    $service_price = mysqli_fetch_all(mysqli_query($connect_main, "SELECT `materials`.`id` as mat_id, `materials`.`name` as name, `materials`.`price` as price FROM  `materials` WHERE `materials`.`category_id`=1"));
+    $goods_price = mysqli_fetch_all(mysqli_query($connect_main, "SELECT `materials`.`id` as mat_id, `materials`.`name` as name, `materials`.`price` as price FROM  `materials` WHERE `materials`.`category_id`=2"));
 
     // find this service lsit
     $find_service_text="SELECT
@@ -27,7 +27,9 @@
     if (isset($_POST['service-add'])){
         $serviceName = $_POST['newservice'];
         $category = $_POST['category'];
-        mysqli_query($connect_main, "INSERT INTO `service` (`name`, `category_id`) VALUES ('$serviceName', '$category')") or die(mysqli_error($connect_main));
+        $price = $_POST['price'];
+
+        mysqli_query($connect_main, "INSERT INTO `materials` (`name`, `category_id`) VALUES ('$serviceName', '$category')") or die(mysqli_error($connect_main));
         header("Location: ../service_content.php?service_list_id=$service_list_id");
     }
 
@@ -38,15 +40,9 @@
         header("Location: ../service_content.php?service_list_id=$service_list_id");
     }
 
-    if (isset($_GET['service_del'])) {
-        $id = ($_GET['service_del']);
-        mysqli_query($connect_main, "DELETE FROM `service` WHERE `id`=$id") or die(mysqli_error($connect_main));
-        header("Location: ../service_content.php?service_list_id=$service_list_id");
-    }
-
-    if (isset($_GET['goods_del'])) {
-        $id = ($_GET['goods_del']);
-        mysqli_query($connect_main, "DELETE FROM `service` WHERE `id`=$id") or die(mysqli_error($connect_main));
+    if (isset($_GET['mat_del'])) {
+        $mat_id = $_GET['mat_del'];
+        mysqli_query($connect_main, "DELETE FROM `materials` WHERE `id`=$mat_id") or die(mysqli_error($connect_main));
         header("Location: ../service_content.php?service_list_id=$service_list_id");
     }
 
@@ -56,15 +52,13 @@
 
     $recordOnPage = 10; // количество записей на странице
     $startFrom = ($page - 1) * $recordOnPage;
-    $select_text = "SELECT
-        `service_provision`.`id` as id,
-        `service`.`name` as service_name,
-        `service_provision`.`count` as ccount,
-        `service_provision`.`price` as price,
-        `service_list`.`id` as list_id
-    FROM 
-        `service_provision`
-    INNER JOIN `service` ON `service`.`id`=`service_provision`.`service_id`
+    $select_text = "SELECT `service_provision`.`id` as id,
+    `materials`.`name` as name,
+    `service_provision`.`count` as count,
+    `service_provision`.`price` as price,
+    `service_list`.`id` as list_id
+    FROM `service_provision`
+    INNER JOIN `materials` ON `materials`.`id`=`service_provision`.`service_id`
     INNER JOIN `service_list` ON `service_list`.`id`=`service_provision`.`service_list_id`
     WHERE `service_list`.`id`=$service_list_id
     ORDER BY `service_provision`.`id`";
@@ -138,12 +132,13 @@
             <div class="mt-4 mb-4">
                 <div class="row">
                     <div class="col-md-5 mb-4">
-                        <a data-bs-toggle="modal" data-bs-target="#exampleModal"><button class="btn btn-primary">Добавить запись</button></a>
+                        <a data-bs-toggle="modal" data-bs-target="#addModal"><button class="btn btn-primary">Добавить запись</button></a>
                         <a href="service.php"><button class="btn btn-success">Закончить формирование услуг</button></a>
                     </div>
                     <div class="col-md-7 mb-4">
                         <a data-bs-toggle="modal" data-bs-target="#priceList"><button class="btn btn-secondary float-end">Открыть прайс-лист</button></a>
                     </div>
+                    <?php if(isset($_SESSION['error'])){echo("<div class=\"warn\" id=\"warning\">На складе недостаточно материалов!</div>"); unset($_SESSION['error']);}?>
                 </div>
                 
 
@@ -172,7 +167,7 @@
                         <td> <?= $item[3] ?></td>
                         <td> <?= $item[3]*$item[2] ?>
                             <a href ="?service_list_id=<?=$service_list_id?>&del=<?= $item[0]?>" onclick="return confirm('Вы уверены, что хотите удалить эту запись? <?php echo($item[0]) ?>')"><img src="assets/pictures/any/delete.png" data-bs-toggle="tooltip" data-bs-placement="left" title="Удалить эту запись" alt="" width="20" height="20" class="d-inline-block float-end"></a>
-                            <a href="edits/service_content_edit.php?id=<?= $item[0] ?>"><img src="assets/pictures/any/edit.png" alt="" width="20" height="20" class="d-inline-block float-end"></a>
+                            <a href="edits/service_content_edit.php?id=<?= $item[0] ?>&service_list_id=<?=$service_list_id?>"><img src="assets/pictures/any/edit.png" alt="" width="20" height="20" class="d-inline-block float-end"></a>
                         </td>
                         </tr>
                       <?php  }
@@ -193,43 +188,92 @@
         </div>
     </footer>
 
-    <!-- ADD Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+
+    <!-- good/service add -->
+
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Добавление оказанной услуги</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body"> 
-                <form action="processing/service_content-add.php" method="POST" id="my_form">
-                    <div class="mb-3">
-                        <label for="one" class="form-label">Услуга</label>
-                        <select class="form-select" aria-label="Default select example" name="Service" id="one">
-                            <?php 
-                                $emp_q = mysqli_query($connect_main, "SELECT * FROM `service`");
-                                $res = mysqli_fetch_all($emp_q);
-                                foreach ($res as $item) {
-                                    echo("<option value=$item[0]>$item[1]</option>");
-                                }
-                            ?>
-                        </select>
-                        <a href="" class="form-text" data-bs-toggle="modal" data-bs-target="#ServiceModal" data-bs-dismiss="modal">Добавить новую услугу</a>
-                    </div>
-                    <div class="mb-3">
-                        <label for="three" class="form-label">Количество</label>
-                        <input class="form-control" type="text" id="two" name="Count">                   
-                    </div>
-                    <div class="mb-3">
-                        <label for="six" class="form-label">Цена</label>
-                        <input class="form-control" type="text" id="three" name="Price">                   
-                    </div>
-                    <input type="text" id="four" name="service_list_id" visibility: hidden value="<?=$service_list_id?>">  
-                    <button type="submit" class="btn btn-primary" name="bbtn" id="btn_add">Добавить</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                    <div class="warn" id="warning"></div>
-                </form>
-            </div>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Добавить новый товар или услугу</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body"> 
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Услуги</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Товары</button>
+                        </li>
+                    </ul>
+                    
+                        <div class="tab-content mt-2" id="myTabContent">
+                            <!-- service -->
+                            <div class="tab-pane fade show active mb-3" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <form action="processing/sc_service.php" method="POST">
+                                    <div class="mb-3">
+                                        <label for="one" class="form-label">Услуга</label>
+                                        <select class="form-select" name="service" id="one" >
+                                            <?php 
+                                            $emp_q = mysqli_query($connect_main, "SELECT * FROM `materials` WHERE `materials`.`category_id`=1");
+                                            $res = mysqli_fetch_all($emp_q);
+                                            foreach ($res as $item) {
+                                                echo("<option value=$item[0]>$item[1]</option>");
+                                            }?>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="three" class="form-label">Количество</label>
+                                        <input class="form-control" type="text" id="two" name="count">                   
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="six" class="form-label">Цена</label>
+                                        <input class="form-control" type="text" id="three" name="price">                   
+                                    </div>
+                                    <input type="text" id="four" name="service_list_id" visibility: hidden value="<?=$service_list_id?>">
+                                    <button type="submit" class="btn btn-primary" name="bbtn" id="btn-add">Добавить</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                                </form>
+                            </div>
+
+                            <!-- goods -->
+                            <div class="tab-pane fade mb-3" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                <form action="processing/sc_goods.php" method="POST">
+                                    <div class="mb-3">
+                                        <label for="one" class="form-label">Товар</label>
+                                        <select class="form-select" name="goods" id="one" >
+                                            <?php 
+                                            $emp_q = mysqli_query($connect_main, "SELECT
+                                            *
+                                        FROM
+                                            `materials`
+                                        INNER JOIN `stock_balances` ON `stock_balances`.`material_id`=`materials`.`id`
+                                        WHERE `stock_balances`.`count` != 0 AND `materials`.`category_id` != 1");
+                                            $res = mysqli_fetch_all($emp_q);
+                                            foreach ($res as $item) {
+                                                echo("<option value=$item[0]>$item[1]</option>");
+                                            }?>
+                                        </select>
+                                    </div>    
+                                    <div class="mb-3">
+                                        <label for="three" class="form-label">Количество</label>
+                                        <input class="form-control" type="text" id="two" name="count">                   
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="six" class="form-label">Цена</label>
+                                        <input class="form-control" type="text" id="three" name="price">                   
+                                    </div>
+                                    <input type="text" id="four" name="service_list_id" visibility: hidden value="<?=$service_list_id?>">  
+                                    <button type="submit" class="btn btn-primary" name="bbtn" id="goods_add">Добавить</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                                </form>
+                            </div>
+
+                        </div>
+                    
+                </div>
             </div>
         </div>
     </div>
@@ -238,31 +282,35 @@
     <div class="modal fade" id="ServiceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Добавить новую услугу</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body"> 
-                <form action="" method="POST">
-                    <div class="mb-3">
-                        <label for="two" class="form-label">Название</label>
-                        <input class="form-control" type="text" id="two" name="newservice">                                          
-                    </div>
-                    <div class="mb-3">
-                        <label for="one" class="form-label">Категория</label>
-                        <select class="form-select" aria-label="Default select example" name="category" id="one">
-                            <?php 
-                                $emp_q = mysqli_query($connect_main, "SELECT * FROM `category`");
-                                $res = mysqli_fetch_all($emp_q);
-                                foreach ($res as $item) {
-                                    echo("<option value=$item[0]>$item[1]</option>");
-                                }
-                            ?>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary" name="service-add">Добавить</button>
-                </form>
-            </div>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Добавить новую услугу</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body"> 
+                    <form action="" method="POST">
+                        <div class="mb-3">
+                            <label for="two" class="form-label">Название</label>
+                            <input class="form-control" type="text" id="two" name="newservice">                                          
+                        </div>
+                        <div class="mb-3">
+                            <label for="one" class="form-label">Категория</label>
+                            <select class="form-select" aria-label="Default select example" name="category" id="one">
+                                <?php 
+                                    $emp_q = mysqli_query($connect_main, "SELECT * FROM `category`");
+                                    $res = mysqli_fetch_all($emp_q);
+                                    foreach ($res as $item) {
+                                        echo("<option value=$item[0]>$item[1]</option>");
+                                    }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="pp" class="form-label">Цена</label>
+                            <input class="form-control" type="text" id="pp" name="price">                                          
+                        </div>
+                        <button type="submit" class="btn btn-primary" name="service-add">Добавить</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -278,61 +326,68 @@
                 <div class="modal-body"> 
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Услуги</button>
+                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#service" type="button" role="tab" aria-controls="home" aria-selected="true">Услуги</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Товары</button>
+                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#goods" type="button" role="tab" aria-controls="profile" aria-selected="false">Товары</button>
                         </li>
                     </ul>
                     <div class="tab-content mt-2" id="myTabContent">
-                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <!-- прайс услуги -->
+                        <div class="tab-pane fade show active" id="service" role="tabpanel" aria-labelledby="home-tab">
                             <div>
                                 <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Название услуги</th>
-                                        <th>Цена за единицу</th>
-                                    </tr>
-                                </thead>
-                                <?php foreach($service_price as $item) {?>
-                                    <tr>
-                                        <td><?= $item[1]?></td>
-                                        <td> <?= $item[3]?> 
-                                        <a href ="?service_list_id=<?=$service_list_id?>&service_del=<?= $item[0]?>" onclick="return confirm('Вы уверены, что хотите удалить эту запись? <?php echo($item[0]) ?>')"><img src="assets/pictures/any/delete.png" data-bs-toggle="tooltip" data-bs-placement="left" title="Удалить эту запись" alt="" width="20" height="20" class="d-inline-block float-end"></a>
-                                        <a href="edits/price_edits.php?id=<?= $item[0] ?>&list_id=<?=$service_list_id?>"><img src="assets/pictures/any/edit.png" alt="" width="20" height="20" class="d-inline-block float-end"></a>
-                                        </td>
-                                    </tr>
-                                <?php }?>
+                                    <thead>
+                                        <tr>
+                                            <th>Название услуги</th>
+                                            <th>Цена за единицу</th>
+                                        </tr>
+                                    </thead>
+                                    <?php foreach($service_price as $item) {?>
+                                        <tr>
+                                            <td><?= $item[1]?></td>
+                                            <td> <?= $item[2]?> 
+                                            <a href ="?service_list_id=<?=$service_list_id?>&mat_del=<?= $item[0]?>" onclick="return confirm('Вы уверены, что хотите удалить эту запись? <?php echo($item[0]) ?>')"><img src="assets/pictures/any/delete.png" data-bs-toggle="tooltip" data-bs-placement="left" title="Удалить эту запись" alt="" width="20" height="20" class="d-inline-block float-end"></a>
+                                            <a href="edits/price_edits.php?id=<?= $item[0] ?>&list_id=<?=$service_list_id?>"><img src="assets/pictures/any/edit.png" alt="" width="20" height="20" class="d-inline-block float-end"></a>
+                                            </td>
+                                        </tr>
+                                    <?php }?>
+                                </table>
+                            </div>
+                            <a data-bs-toggle="modal" data-bs-target="#ServiceModal"><button class="btn btn-primary">Добавить</button></a>
+                        </div>
+                        
+                        <!-- прайс товары -->
+                        <div class="tab-pane fade" id="goods" role="tabpanel" aria-labelledby="profile-tab">
+                            <div>
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Название товара</th>
+                                            <th>Цена за единицу</th>
+                                        </tr>
+                                    </thead>
+                                    <?php foreach($goods_price as $item) {?>
+                                        <tr>
+                                            <td><?= $item[1]?></td>
+                                            <td> <?= $item[2]?> 
+                                            <a href ="?service_list_id=<?=$service_list_id?>&mat_del=<?= $item[0]?>" onclick="return confirm('Вы уверены, что хотите удалить эту запись? <?php echo($item[0]) ?>')"><img src="assets/pictures/any/delete.png" data-bs-toggle="tooltip" data-bs-placement="left" title="Удалить эту запись" alt="" width="20" height="20" class="d-inline-block float-end"></a>
+                                            <a href="edits/priceg_edits.php?id=<?= $item[0] ?>&list_id=<?=$service_list_id?>"><img src="assets/pictures/any/edit.png" alt="" width="20" height="20" class="d-inline-block float-end"></a>
+                                            </td>
+                                        </tr>
+                                    <?php }?>
                                 </table>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                            <div>
-                                <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Название товара</th>
-                                        <th>Цена за единицу</th>
-                                    </tr>
-                                </thead>
-                                <?php foreach($goods_price as $item) {?>
-                                    <tr>
-                                        <td><?= $item[1]?></td>
-                                        <td> <?= $item[3]?> 
-                                        <a href ="?service_list_id=<?=$service_list_id?>&goods_del=<?= $item[0]?>" onclick="return confirm('Вы уверены, что хотите удалить эту запись? <?php echo($item[0]) ?>')"><img src="assets/pictures/any/delete.png" data-bs-toggle="tooltip" data-bs-placement="left" title="Удалить эту запись" alt="" width="20" height="20" class="d-inline-block float-end"></a>
-                                        <a href="edits/priceg_edits.php?id=<?= $item[0] ?>&list_id=<?=$service_list_id?>"><img src="assets/pictures/any/edit.png" alt="" width="20" height="20" class="d-inline-block float-end"></a>
-                                        </td>
-                                    </tr>
-                                <?php }?>
-                                </table>
-                            </div>
-                        </div>
-                        <a data-bs-toggle="modal" data-bs-target="#ServiceModal"><button class="btn btn-primary">Добавить</button></a>
+                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
+    
     <script src="scripts/service_content_fields_check.js"></script>
 </body>
 </html>

@@ -5,14 +5,14 @@
     $id = $_GET['id'];
     $list_id = $_GET['list_id'];
 
-    $data = mysqli_fetch_assoc(mysqli_query($connect_main, "SELECT * FROM `service`
+    $data = mysqli_fetch_assoc(mysqli_query($connect_main, "SELECT * FROM `materials`
     WHERE `id`='$id'"));
 
     if (isset($_POST['bbtn'])){
         $service = $_POST['service_name'];
         $price = $_POST['Price'];
         
-        mysqli_query($connect_main, "UPDATE `service` SET `name`='$service', `price`='$price' WHERE `id`='$id'");
+        mysqli_query($connect_main, "UPDATE `materials` SET `name`='$service', `price`='$price' WHERE `id`='$id'");
         header("Location: ../service_content.php?service_list_id=$list_id");
     }
 

@@ -45,9 +45,8 @@ session_start();
             
                 FROM
                     `service_provision`
-                INNER JOIN `service_list` ON `service_provision`.`service_list_id` = `service_list`.`id`
-                INNER JOIN `service` ON `service`.`id`=`service_provision`.`service_id`
-                WHERE `service`.`category_id`=1
+                INNER JOIN `materials` ON `materials`.`id`=`service_provision`.`service_id`
+                WHERE `materials`.`category_id`=1
                 "));
 
                 $goodsIncome = mysqli_fetch_assoc(mysqli_query($connect_main, "SELECT
@@ -56,9 +55,8 @@ session_start();
                 ) AS SUM
                 FROM
                     `service_provision`
-                INNER JOIN `service_list` ON `service_provision`.`service_list_id` = `service_list`.`id`
-                INNER JOIN `service` ON `service`.`id`=`service_provision`.`service_id`
-                WHERE `service`.`category_id`=2
+                INNER JOIN `materials` ON `materials`.`id`=`service_provision`.`service_id`
+                WHERE `materials`.`category_id`!=1
                 "));
 
                 $incomeTotal = mysqli_fetch_all(mysqli_query($connect_main, 

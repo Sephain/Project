@@ -26,12 +26,12 @@
     //add new mat
     if (isset($_POST['newmaterial'])) {
         $newm = $_POST['newmaterial'];
+        $newc = $_POST['newcategory'];
 
-        $q_text = "INSERT INTO `materials` (`name`) VALUES ('$newm')";
+        $q_text = "INSERT INTO `materials` (`name`, `category_id`) VALUES ('$newm','$newc')";
         mysqli_query($connect_main, $q_text) or die(mysqli_error($connect_main));
         header("Location: ../orders_content.php?order_id=$order_id");
     }
-
 
     // query for deleting
     if (isset($_GET['del'])) {
@@ -201,7 +201,7 @@
         </div>
     </footer>
 
-    <!-- ADD Modal -->
+    <!-- добавить запись -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -216,7 +216,7 @@
                         <select class="form-select" aria-label="Default select example" name="material" id="one">
                             
                             <?php 
-                                $emp_q = mysqli_query($connect_main, "SELECT * FROM `materials`");
+                                $emp_q = mysqli_query($connect_main, "SELECT * FROM `materials` WHERE `category_id` != 1");
                                 $res = mysqli_fetch_all($emp_q);
                                 foreach ($res as $item) {
                                     echo("<option value=$item[0]>$item[1]</option>");
@@ -244,8 +244,8 @@
     </div>
 
 
-    <!-- НОВЫЙ МАТЕРИАЛ -->
-    <div class="modal fade" id="MaterialModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- НОВЫЙ МАТЕРИАЛ -->
+        <div class="modal fade" id="MaterialModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
@@ -257,6 +257,18 @@
                     <div class="mb-3">
                         <label for="two" class="form-label">Название материала</label>
                         <input class="form-control" type="text" id="two" name="newmaterial">                   
+                    </div>
+                    <div class="mb-3">
+                        <label for="one" class="form-label">Категория</label>
+                        <select class="form-select" aria-label="Default select example" name="newcategory" id="one">
+                            <?php 
+                                $emp_q = mysqli_query($connect_main, "SELECT * FROM `category` WHERE `id` != 1");
+                                $res = mysqli_fetch_all($emp_q);
+                                foreach ($res as $item) {
+                                    echo("<option value=$item[0]>$item[1]</option>");
+                                }
+                            ?>
+                        </select>                        
                     </div>
                     <button type="submit" class="btn btn-primary" name="bbtn-add">Добавить</button>
                 </form>

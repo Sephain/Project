@@ -156,17 +156,17 @@
                             <?php 
                                 $emp_q = mysqli_query($connect_main, "SELECT 
                                 `service_provision`.`id` as id,
-                                `service`.`name` as service,
+                                `materials`.`name` as name,
                                 `service_list`.`date` as date
                                 FROM 
                                 `service_provision`
                                 LEFT JOIN `waste_list` ON `waste_list`.`service_id`=`service_provision`.`id`
-                                INNER JOIN `service` ON `service`.`id`=`service_provision`.`service_id`
                                 INNER JOIN `service_list` ON `service_list`.`id`=`service_provision`.`service_list_id`
+                                INNER JOIN `materials` ON `materials`.`id`=`service_provision`.`service_id`
                                 WHERE `waste_list`.`service_id` is NULL");
                                 $res = mysqli_fetch_all($emp_q);
                                 foreach ($res as $item) {
-                                    echo("<option value=$item[0]>$item[0] - $item[1], дата: $item[2]</option>");
+                                    echo("<option value=$item[0]>$item[0] - $item[1], $item[2]</option>");
                                 }
                             ?>
                         </select>

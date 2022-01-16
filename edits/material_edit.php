@@ -8,13 +8,15 @@
     $id = $_GET['id'];
 
 
-    $data = mysqli_fetch_assoc(mysqli_query($connect_main, "SELECT `name` as name FROM `materials` WHERE `materials`.`id`='$id'"));
+    $data = mysqli_fetch_assoc(mysqli_query($connect_main, "SELECT `name` as name, `price` as price, `category_id` as cat_id FROM `materials` WHERE `materials`.`id`='$id'")) or die(mysqli_error($connect_main));
 
+    $old_category_id = $data['cat_id'];
 
     if (isset($_POST['bbtn'])){
         $material = $_POST['material'];
-
-        mysqli_query($connect_main, "UPDATE `materials` SET `name`='$material' WHERE `materials`.`id`='$id'");
+        $category = $_POST['newcategory'];
+        $price = $_POST['price'];
+        mysqli_query($connect_main, "UPDATE `materials` SET `name`='$material', `price`='$price', `category_id`='$category' WHERE `materials`.`id`='$id'");
         header("Location: ../materials.php");
     }
 ?>
@@ -67,6 +69,23 @@
                         <div class="mb-3">
                             <label for="one" class="form-label">Измените название материала</label>
                             <input class="form-control" type="text" name="material" id="one" value="<?=$data['name']?>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="one" class="form-label">Категория</label>
+                            <select class="form-select" aria-label="Default select example" name="newcategory" id="one">
+                                <?php 
+                                    $emp_q = mysqli_query($connect_main, "SELECT * FROM `category` WHERE `id` != 1");
+                                    $res = mysqli_fetch_all($emp_q);
+                                    foreach ($res as $item) {
+                                        if ($item[0] == $old_category_id) echo("<option selected value=$item[0]>$item[1]</option>");
+                                        else echo("<option value=$item[0]>$item[1]</option>");
+                                    }
+                                ?>
+                            </select>                        
+                        </div>
+                        <div class="mb-3">
+                            <label for="one" class="form-label">Цена за единицу</label>
+                            <input class="form-control" type="text" name="price" id="one" value="<?=$data['price']?>">
                         </div>
                         <button type="submit" class="btn btn-primary" name="bbtn" id="btn_add">Изменить</button>
                         <div class="warn" id="warning"></div>
