@@ -9,9 +9,10 @@
     if (isset($_POST['client-add'])) {
         $name = $_POST['name'];
         $last_name = $_POST['last_name'];
+        $m_name = $_POST['middle_name'];
         $contacts = $_POST['contacts'];
 
-        $q_text = "INSERT INTO `clients` (`first_name`, `last_name`, `contacts`) VALUES ('$name', '$last_name', '$contacts')";
+        $q_text = "INSERT INTO `clients` (`first_name`, `last_name`, `middle_name`, `contacts`) VALUES ('$name', '$last_name', '$m_name', '$contacts')";
         mysqli_query($connect_main, $q_text) or die(mysqli_error($connect_main));
         header("Location: ../service.php");
     }
@@ -95,15 +96,15 @@
     <section>
         <div class="container-md">
             <div class="mt-4 mb-4">
-                <h3><p>Раздел "Оказание услуг"</p></h3>
+                <h3><p>Раздел "Бланки оказания услуг"</p></h3>
                 <p class="fst-italic">Здесь представлены бланки оказания услуг нашим клиентам. </p>
                 <p class="fst-italic">Вы можете добавить новый бланк в список, либо ознакомиться и отредактировать уже существующий.</p>
                 <hr>
             </div>
             <div class="mt-4 mb-4">
                 <div class="row">
-                    <div class="col-md-4 mb-4">
-                        <a data-bs-toggle="modal" data-bs-target="#exampleModal"><button class="btn btn-primary">Добавить запись</button></a>
+                    <div class="col-md-5 mb-4">
+                        <a data-bs-toggle="modal" data-bs-target="#exampleModal"><button class="btn btn-primary">Добавить новый бланк</button></a>
                         <a href="clients.php"><button class="btn btn-secondary">Просмотреть список клиентов</button></a>
                     </div>
 
@@ -160,7 +161,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Добавление оказанной услуги</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Новый бланк</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body"> 
@@ -172,7 +173,7 @@
                                 $emp_q = mysqli_query($connect_main, "SELECT * FROM `employee` INNER JOIN `position` ON `employee`.`position`=`position`.`id` WHERE `employee`.`position`='4' OR `employee`.`position`='6'");
                                 $res = mysqli_fetch_all($emp_q);
                                 foreach ($res as $item) {
-                                    echo("<option value=$item[0]>$item[1] $item[2] - $item[8]</option>");
+                                    echo("<option value=$item[0]>$item[2] $item[1] $item[3] - $item[9]</option>");
                                 }
                             ?>
                         </select>
@@ -184,7 +185,7 @@
                                 $emp_q = mysqli_query($connect_main, "SELECT * FROM `clients`");
                                 $res = mysqli_fetch_all($emp_q);
                                 foreach ($res as $item) {
-                                    echo("<option value=$item[0]>$item[1] $item[2]</option>");
+                                    echo("<option value=$item[0]>$item[2] $item[1] $item[3] </option>");
                                 }
                             ?>
                         </select>
@@ -220,6 +221,10 @@
                     <div class="mb-3">
                         <label for="two" class="form-label">Фамилия</label>
                         <input class="form-control" type="text" id="two" name="last_name">                   
+                    </div>
+                    <div class="mb-3">
+                        <label for="mid" class="form-label">Отчество</label>
+                        <input class="form-control" type="text" id="mid" name="middle_name">                   
                     </div>
                     <div class="mb-3">
                         <label for="three" class="form-label">Контактный телефон</label>

@@ -1,8 +1,7 @@
 <div class="container-md mt-4 mb-4">
         <h3 class="mb-4">Добро пожаловать!</h3>
 
-        <i>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt labore, quas laborum mollitia fugiat soluta non deserunt dolorum, ipsa dignissimos iure, magni optio voluptas doloremque magnam saepe minus delectus? At?</i>
-        <hr>
+        <p class="fst-italic">На главной странице можно получить доступ ко всем основным разделам, которые необходимы Вам для работы.</p> <hr>
         <div class="container justify-content-center">
             <div class="row mt-4 mb-4">
 

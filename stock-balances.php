@@ -63,7 +63,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/a016363d36.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles/stl.css">   
-    <title>Материалы в наличии</title>
+    <title>Товары и материалы в наличии</title>
 </head>
 <body>
 
@@ -96,17 +96,17 @@
     <section>
         <div class="container-md">
             <div class="mt-4 mb-4">
-                <h3><p>Раздел "Материалы в наличии"</p></h3>
+                <h3><p>Раздел "Товары и материалы в наличии"</p></h3>
 
-                <p class="fst-italic">Здесь представлен список всех материалов, которыми располагает фотоцентр на данный момент. </P>
+                <p class="fst-italic">Здесь представлен список всех товаров и материалов, которыми располагает фотоцентр на данный момент. </P>
                 <p class="fst-italic">Обратите внимание, если на складе будет недостаточно какого-го либо материала или он вовсе зкончился, рядом с ним появится характерный значок восклицательного знака.</p>
                 <hr>
             </div>
             <div class="mt-4 mb-4">
                 <div class="row">
-                    <div class="col-md-6 mb-4">
-                        <a data-bs-toggle="modal" data-bs-target="#exampleModal"><button class="btn btn-primary">Добавить материал</button></a>
-                        <a href="materials.php"><button class="btn btn-secondary">Просмотреть список материалов</button></a>
+                    <div class="col-md-8 mb-4">
+                        <a data-bs-toggle="modal" data-bs-target="#exampleModal"><button class="btn btn-primary">Добавить товар или материал</button></a>
+                        <a href="materials.php"><button class="btn btn-secondary">Просмотреть список товаров, материалов и услуг</button></a>
                     </div>
                     
                 </div>

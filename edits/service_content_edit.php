@@ -18,7 +18,7 @@
     INNER JOIN `service_provision` ON `service_provision`.`service_id`=`materials`.`id`
     WHERE `service_provision`.`id` = $id") or die(mysqli_error($connect_main));
     $old_data = mysqli_fetch_assoc($old_q);
-    print_r($old_data);
+
     $old_material_id = $old_data['mat_id'];
     $old_name = $old_data['name'];
     $old_category = $old_data['cat_id'];

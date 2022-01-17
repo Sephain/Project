@@ -88,16 +88,14 @@
         <div class="container-md">
             <div class="mt-4 mb-4">
                 <h3><p>Раздел "Список материалов, товаров и услуг"</p></h3>
-                <p class="fst-italic">Здесь представлен список всех материалов, которыми располагает фотоцентр на данный момент. </P>
-                <p class="fst-italic">Обратите внимание, если на складе будет недостаточно какого-го либо материала или он вовсе зкончился, рядом с ним появится характерный значок восклицательного знака.</p>
-                <a href="stock-balances.php" class="form-text">Вернуться</a>
+                <p class="fst-italic">Здесь представлен список всех материалов, товаров и услуг, занесенных в базу. </P>
                 
                 <hr>
             </div>
             <div class="mt-4 mb-4">
                 <div class="row">
                     <div class="col-md-4 mb-4">
-                        <a data-bs-toggle="modal" data-bs-target="#MaterialModal"><button class="btn btn-primary">Добавить новый товар или материал</button></a>
+                        <a data-bs-toggle="modal" data-bs-target="#MaterialModal"><button class="btn btn-primary">Добавить новую позицию</button></a>
                     </div>
                     
                 </div>

@@ -8,10 +8,10 @@
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="service.php">Оказание услуг</a>
+                    <a class="nav-link" href="service.php">Бланки оказания услуг</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="waste_list.php">Отходы</a>
+                    <a class="nav-link" aria-current="page" href="waste_list.php">Утилизация отходов</a>
                 </li>
             </ul>
             </div>

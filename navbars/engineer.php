@@ -8,19 +8,19 @@
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="employee.php">Сотрудники</a>
+                    <a class="nav-link" aria-current="page" href="employee.php">Управление учетными записями</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="vendor.php">Поставщики</a>
+                    <a class="nav-link" href="vendor.php">Список поставщиков</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="service.php">Оказание услуг</a>
+                    <a class="nav-link" href="service.php">Бланки оказания услуг</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="reports.php">Бухгалтерия</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="waste_list.php">Отходы</a>
+                    <a class="nav-link" aria-current="page" href="waste_list.php">Утилизация отходов</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
