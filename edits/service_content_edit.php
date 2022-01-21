@@ -23,7 +23,6 @@
     $old_name = $old_data['name'];
     $old_category = $old_data['cat_id'];
     $old_provision_count = $old_data['provision_count'];
-    //$old_stock_count = $old_data['count']; // !!!
     $old_price = $old_data['price'];
 
     if (isset($_POST['bbtn'])){
@@ -31,17 +30,19 @@
         $new_count = $_POST['Count'];
         $new_price = $_POST['Price'];
         
-        $new_data = mysqli_fetch_assoc(mysqli_query($connect_main, "SELECT `category_id` as cat_id, `count` as count FROM `materials` INNER JOIN `stock_balances` ON `stock_balances`.`material_id`=`materials`.`id` WHERE `materials`.`id`=$new_material_id"));
+        $new_data = mysqli_fetch_assoc(mysqli_query($connect_main, "SELECT `category_id` as cat_id, `count` as count 
+        FROM `materials` INNER JOIN `stock_balances` ON `stock_balances`.`material_id`=`materials`.`id` 
+        WHERE `materials`.`id`=$new_material_id"));
         $new_category = $new_data['cat_id'];
         $stock_new_count = $new_data['count'];
 
+        mysqli_begin_transaction($connect_main);
         try{
             if ($old_category == $new_category){ // услуга на услугу или товар на товар (категория НЕ меняется)
                 if ($new_category == 1){ // если это услуга на услугу
                     
                 }
                 else{ // если это товар на товар
-                    // $old_stock_count = mysqli_fetch_assoc(mysqli_query($connect_main, ""));
                     if ($new_count > $stock_new_count) throw new mysqli_sql_exception();
                     else{
                         mysqli_query($connect_main, "UPDATE `stock_balances` SET `count`=`count`+'$old_provision_count' WHERE `material_id`='$old_material_id'") or die(mysqli_error($connect_main));
@@ -61,6 +62,7 @@
                 }
             }
             mysqli_query($connect_main, "UPDATE `service_provision` SET `service_id`='$new_material_id', `count`='$new_count', `price`='$new_price' WHERE `service_provision`.`id`='$id'");
+            mysqli_commit($connect_main);
             header("Location: ../service_content.php?service_list_id=$service_list_id");
         }
         catch(mysqli_sql_exception $e){

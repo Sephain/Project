@@ -44,7 +44,6 @@
     if (isset($_GET['page'])) { $page = $_GET['page']; }
     else { $page = 1; }
 
-    
     $recordOnPage = 5; // количество записей на странице
     $startFrom = ($page - 1) * $recordOnPage;
     $select_text="SELECT 
@@ -64,7 +63,6 @@
     $select_query = mysqli_query($connect_main, $select_text);
     $new = mysqli_fetch_all($select_query);
     
-
     // pagination =)
     $count_query = mysqli_query($connect_main, "SELECT COUNT(*) as count FROM `orders_content` WHERE `orders_id`=$order_id") or die(mysqli_error($connect_main));
     $count = mysqli_fetch_assoc($count_query)['count'];
@@ -99,7 +97,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles/stl.css">   
-    <title>Состав</title>
+    <title>Содержание заказа</title>
 </head>
 <body>
 

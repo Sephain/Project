@@ -1,6 +1,5 @@
 <?php
     require_once('../php/connect-main.php');
-    print_r($_POST);
 
     $service = $_POST['service'];
     $count = $_POST['count'];

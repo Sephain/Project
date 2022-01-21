@@ -15,7 +15,7 @@
     if (isset($_GET['page'])) { $page = $_GET['page']; }
     else { $page = 1; }
 
-    $recordOnPage = 15; // количество записей на странице
+    $recordOnPage = 10; // количество записей на странице
     $startFrom = ($page - 1) * $recordOnPage;
     $select_text="SELECT 
 	`orders`.`id` AS id,
@@ -29,11 +29,11 @@
     INNER JOIN `vendor` ON `vendor`.`id`=`orders`.`vendor_id`
     INNER JOIN `employee` ON `employee`.`id`=`orders`.`employee_id`
     ORDER BY `orders`.`id`
+    LIMIT $startFrom,$recordOnPage
     ";
     $select_query = mysqli_query($connect_main, $select_text);
     $new = mysqli_fetch_all($select_query);
     
-
     // pagination =)
     $count_query = mysqli_query($connect_main, "SELECT COUNT(*) as count FROM `orders`") or die(mysqli_error($connect));
     $count = mysqli_fetch_assoc($count_query)['count'];
@@ -86,7 +86,7 @@
     <section>
         <div class="container-md">
             <div class="mt-4 mb-4">
-                <h3><p>Раздел "Приход материалов"</p></h3>
+                <h3><p>Приход материалов</p></h3>
                 <p class="fst-italic">Здесь представлен список всех заказов материалов у поставщиков. </p>
                 <p class="fst-italic">Вы можете добавить новый заказ либо ознакомиться с существующим и изменить его.</p>
                 <hr>

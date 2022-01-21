@@ -17,7 +17,7 @@
         header("Location: ../materials.php");
     }
     
-    // query for deleting
+
     if (isset($_GET['del'])) {
         $id = ($_GET['del']);
         mysqli_query($connect_main, "DELETE FROM `materials` WHERE id=$id") or die(mysqli_error($connect_main));
@@ -31,12 +31,12 @@
     $startFrom = ($page - 1) * $recordOnPage;
     $select_text="SELECT * FROM `materials` INNER JOIN `category` ON `category`.`id`=`materials`.`category_id` ORDER BY `materials`.`id`
     LIMIT $startFrom,$recordOnPage";
+
     $select_query = mysqli_query($connect_main, $select_text);
     $new = mysqli_fetch_all($select_query);
     
-
     // pagination =)
-    $count_query = mysqli_query($connect_main, "SELECT COUNT(*) as count FROM `materials`") or die(mysqli_error($connect));
+    $count_query = mysqli_query($connect_main, "SELECT COUNT(*) as count FROM `materials`") or die(mysqli_error($connect_main));
     $count = mysqli_fetch_assoc($count_query)['count'];
     $pagesCount = ceil($count / $recordOnPage);
 
@@ -87,7 +87,7 @@
     <section>
         <div class="container-md">
             <div class="mt-4 mb-4">
-                <h3><p>Раздел "Список материалов, товаров и услуг"</p></h3>
+                <h3><p>Список материалов, товаров и услуг</p></h3>
                 <p class="fst-italic">Здесь представлен список всех материалов, товаров и услуг, занесенных в базу. </P>
                 
                 <hr>

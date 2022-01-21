@@ -5,8 +5,6 @@
     if (!$_SESSION['user']) { header('Location: ../index.php'); }
     require_once('../php/connect-main.php');
     if (isset($_GET['order_id'])) {$order_id = $_GET['order_id']; }
-    // echo($order_id);
-    // echo($_GET['id']);
     $id = $_GET['id'];
 
     //add new mat
@@ -17,8 +15,6 @@
         mysqli_query($connect_main, $q_text) or die(mysqli_error($connect_main));
         header("Location: ../edit.php?utable=orders_content&id=<?= $item[0]?>&order_id=<?=$order_id?>");
     }
-
-
 
     $select_text="SELECT 
 	`orders_content`.`id` AS id,
@@ -40,8 +36,7 @@
     if (isset($_POST['bbtn'])){
         $newMatId=$_POST['newMatId'];
         $count=$_POST['count'];
-        $price=$_POST['price'];
-       
+        $price=$_POST['price'];      
 
         if ($newMatId != $mat_id) // если был выбран новый материал
         {
@@ -52,7 +47,6 @@
             FROM 
             `stock_balances` 
             WHERE `stock_balances`.`material_id`='$newMatId'";
-
             $exists=mysqli_num_rows(mysqli_query($connect_main, $existQuery)); // проверяем, есть ли у нас новый материал уже на складе (если ли такая строка)
 
             if ($exists != 0) {$update_text="UPDATE `stock_balances` SET `count`=`count`+'$count' WHERE `stock_balances`.`material_id`='$newMatId'";} // если есть - апдейт, иначе инсерт
@@ -66,15 +60,7 @@
         }
 
         $u_text="UPDATE `orders_content` SET `material_id`='$newMatId', `count`='$count', `price_one`='$price' WHERE `orders_content`.`id`='$id' ";
-        //echo($u_text);
         mysqli_query($connect_main, $u_text) or die(mysqli_error($connect_main));
-
-        //$stockDelete ="DELETE FROM `stock_balances` WHERE `stock_balances`.`material_id`='$newMatId'";
-        
-        // print_r('ID материала, который стал: ' . $newMatId);
-        // print_r("_________ ");
-        // print_r('ID материала, который был: ' .$mat_id);
-
         header("Location: ../orders_content.php?order_id=$order_id");
     }
 ?>

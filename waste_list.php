@@ -20,19 +20,19 @@
     $select_text="SELECT
 	`waste_list`.`id` as id,
     `waste_list`.`service_id` as service_id,
-    `service_list`.`date` as date
+    `service_list`.`date` as date,
+    CONCAT(`employee`.`last_name`, ' ',`employee`.`first_name`, ' ', `employee`.`middle_name`) as emp_id
     FROM 
         `service_provision`
     INNER JOIN `waste_list` ON `waste_list`.`service_id`=`service_provision`.`id`
     INNER JOIN `service_list` ON `service_list`.`id`=`service_provision`.`service_list_id`
+    INNER JOIN `employee` ON `employee`.`id`=`waste_list`.`employee_id`
     ORDER BY `waste_list`.`id`
     LIMIT $startFrom,$recordOnPage";
     $select_query = mysqli_query($connect_main, $select_text) or die(mysqli_error($connect_main));
     $new = mysqli_fetch_all($select_query);
     
-
     // pagination =)
-
     $count_query = mysqli_query($connect_main, "SELECT COUNT(*) as count FROM `waste_list`") or die(mysqli_error($connect));
     $count = mysqli_fetch_assoc($count_query)['count'];
     $pagesCount = ceil($count / $recordOnPage);
@@ -50,7 +50,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles/stl.css">   
-    <title>Отходы</title>
+    <title>Бланки утилизации отходов</title>
 </head>
 <body>
 
@@ -83,7 +83,7 @@
     <section>
         <div class="container-md">
             <div class="mt-4 mb-4">
-                <h3><p>Раздел "Утилизация отходов"</p></h3>
+                <h3><p>Бланки утилизации отходов</p></h3>
                 <p class="fst-italic">Здесь представлен список отходов, возникающих после оказания услуг. </p>
                 <p class="fst-italic">Вы можете добавить новый бланк утилизации отходов либо ознакомиться с существующими и изменить их.</p>
                 <hr>
@@ -106,6 +106,7 @@
                                 <th>№</th>
                                 <th>Номер оказания услуги</th>
                                 <th>Дата оказания услуги</th>
+                                <th>Сотрудник</th>
                             </tr>
                         </thead>");
                     }
@@ -116,7 +117,8 @@
                         <tr>
                         <td> <?= $item[0] ?></td>
                         <td> <?= $item[1] ?></td>
-                        <td> <?= $item[2] ?>
+                        <td> <?= $item[2] ?></td>
+                        <td> <?= $item[3] ?>
                             <a href ="?del=<?= $item[0]?>" onclick="return confirm('Вы уверены, что хотите удалить эту запись? <?php echo($item[0]) ?>')"><img src="assets/pictures/any/delete.png" data-bs-toggle="tooltip" data-bs-placement="left" title="Удалить эту запись" alt="" width="20" height="20" class="d-inline-block float-end"></a>
                             <a href="edits/waste_list_edit.php?id=<?= $item[0] ?>"><img src="assets/pictures/any/edit.png" alt="" width="20" height="20" class="d-inline-block float-end"></a>
                             <a href="waste_content.php?waste_list_id=<?= $item[0] ?>"><img src="assets/pictures/any/view.png" title="Просмотреть содержание" alt="" width="20" height="20" class="d-inline-block float-end"></a>
@@ -167,6 +169,18 @@
                                 $res = mysqli_fetch_all($emp_q);
                                 foreach ($res as $item) {
                                     echo("<option value=$item[0]>$item[0] - $item[1], $item[2]</option>");
+                                }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="one" class="form-label">Выберите сотрудника</label>
+                        <select class="form-select" aria-label="Default select example" name="emp" id="one">
+                            <?php 
+                                $emp_q = mysqli_query($connect_main, "SELECT * FROM `employee` WHERE `position` = 3");
+                                $res = mysqli_fetch_all($emp_q);
+                                foreach ($res as $item) {
+                                    echo("<option value=$item[0]>$item[2] $item[1] $item[3]</option>");
                                 }
                             ?>
                         </select>

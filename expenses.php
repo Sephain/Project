@@ -23,7 +23,7 @@
     `expenses`.`count` AS counts,
     CONCAT(`employee`.`first_name`, ' ',`employee`.`last_name`) AS name,
     `expenses`.`date` AS ddate,
-    `expenses`.`purpose` AS purpose
+    `expenses`.`service_id` AS purpose
     FROM	
         `expenses`
     INNER JOIN `materials` ON `materials`.`id`=`expenses`.`material_id`
@@ -32,10 +32,9 @@
     LIMIT $startFrom,$recordOnPage";
     $select_query = mysqli_query($connect_main, $select_text);
     $new = mysqli_fetch_all($select_query);
-    
 
     // pagination =)
-    $count_query = mysqli_query($connect_main, "SELECT COUNT(*) as count FROM `expenses`") or die(mysqli_error($connect));
+    $count_query = mysqli_query($connect_main, "SELECT COUNT(*) as count FROM `expenses`") or die(mysqli_error($connect_main));
     $count = mysqli_fetch_assoc($count_query)['count'];
     $pagesCount = ceil($count / $recordOnPage);
 
@@ -52,7 +51,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles/stl.css">   
-    <title>Расходы</title>
+    <title>Расход материалов</title>
 </head>
 <body>
 
@@ -85,15 +84,15 @@
     <section>
         <div class="container-md">
             <div class="mt-4 mb-4">
-                <h3><p>Раздел "Расход материалов"</p></h3>
+                <h3><p>Расход материалов</p></h3>
                 <p class="fst-italic">Здесь представлен список всех расходов материалов со склада. </p>
-                <p class="fst-italic">Вы можете добавить новую позицию либо изменить существующие.</p>
+                <p class="fst-italic"></p>
                 <hr>
             </div>
             <div class="mt-4 mb-4">
                 <div class="row">
                     <div class="col-md-4 mb-4">
-                        <a data-bs-toggle="modal" data-bs-target="#exampleModal"><button class="btn btn-primary">Добавить запись</button></a>
+                        <!-- <a data-bs-toggle="modal" data-bs-target="#exampleModal"><button class="btn btn-primary">Добавить запись</button></a> -->
                     </div>
                     <?php if(isset($_SESSION['error'])){echo("<div class=\"warn\" id=\"warning\">На складе недостаточно материалов!</div>"); unset($_SESSION['error']);}?>
                 </div>
@@ -108,9 +107,9 @@
                                     <th>№</th>
                                     <th>Материал</th>
                                     <th>Количество</th>
-                                    <th>Кому выдано</th>
+                                    <th>Сотрудник</th>
                                     <th>Дата выдачи</th>
-                                    <th>Цель</th>
+                                    <th>Номер акта оказания услуг</th>
                                 </tr>
                             </thead>");
                         }

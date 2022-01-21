@@ -1,6 +1,7 @@
 <?php 
     require_once('../php/connect-main.php');
     $service_id = $_POST['service'];
+    $emp = $_POST['emp'];
     $temp = mysqli_fetch_assoc(mysqli_query($connect_main, "SELECT
 	`service_list`.`date` as date
     FROM
@@ -9,8 +10,8 @@
     WHERE `service_provision`.`id`=$service_id")); 
     $date=$temp['date'];
 
-    $q_text = "INSERT INTO `waste_list` (`service_id`, `date`) 
-    VALUES ('$service_id', '$date')";
+    $q_text = "INSERT INTO `waste_list` (`service_id`, `date`, `employee_id`) 
+    VALUES ('$service_id', '$date', '$emp')";
     mysqli_query($connect_main, $q_text) or die(mysqli_error($connect_main));
     header('Location: ../waste_list.php');
 ?> 

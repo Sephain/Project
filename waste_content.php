@@ -7,7 +7,7 @@
     if (isset($_GET['waste_list_id'])) {$waste_list_id = $_GET['waste_list_id']; }
 
     // find this service lsit
-    $find_waste_list_text="SELECT * FROM `waste_list` WHERE `waste_list`.`id`=$waste_list_id";
+    $find_waste_list_text="SELECT `waste_list`.`id` AS id, `waste_list`.`date` AS date, `waste_list`.`service_id` AS service_id, CONCAT(`employee`.`last_name`, ' ', `employee`.`first_name`, ' ', `employee`.`middle_name`) AS name FROM `waste_list` INNER JOIN `employee` ON `employee`.`id`=`waste_list`.`employee_id` WHERE `waste_list`.`id`=$waste_list_id";
     $waste_list_data = mysqli_fetch_assoc( mysqli_query($connect_main, $find_waste_list_text));
 
     // query for deleting
@@ -21,14 +21,13 @@
     if (isset($_GET['page'])) { $page = $_GET['page']; }
     else { $page = 1; }
 
-    $recordOnPage = 15; // количество записей на странице
+    $recordOnPage = 10; // количество записей на странице
     $startFrom = ($page - 1) * $recordOnPage;
-    $select_text = "SELECT `id`, `name`, `amount`, `measure` FROM `waste`";
+    $select_text = "SELECT `id`, `name`, `amount`, `measure` FROM `waste` WHERE `waste_list_id`=$waste_list_id LIMIT $startFrom,$recordOnPage";
 
     $select_query = mysqli_query($connect_main, $select_text) or die(mysqli_error($connect_main));
     $new = mysqli_fetch_all($select_query);
     
-
     // pagination =)
     $count_query = mysqli_query($connect_main, "SELECT COUNT(*) as count FROM `waste` WHERE `waste_list_id`=$waste_list_id") or die(mysqli_error($connect_main));
     $count = mysqli_fetch_assoc($count_query)['count'];
@@ -46,7 +45,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles/stl.css">   
-    <title>Бланк отходов</title>
+    <title>Акт утилизации отходов</title>
 </head>
 <body>
 
@@ -80,8 +79,10 @@
         
         <div class="container-md">
             <div class="mt-4 mb-4">
-                    <h3><p>Бланк утилизации отходов № <?= $waste_list_data['id'] ?></p></h3>
+                    <h3><p>Акт утилизации отходов № <?= $waste_list_data['id'] ?></p></h3>
                     <p>Дата формирования бланка: <?= $waste_list_data['date'] ?></p>
+                    <p>Номер оказанной услуги: <?= $waste_list_data['service_id'] ?></p>
+                    <p>Сотрудник, ответственный за утилизацию: <?= $waste_list_data['name'] ?></p>
                     <hr>
                 </div>
             <div class="mt-4 mb-4">

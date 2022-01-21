@@ -17,9 +17,9 @@
 
                 <div class="col-md-4">
                     <div class="card my-card" style="width: 20rem; margin-left:auto; margin-right:auto ">    
-                    <div class="card-header"><img src="assets/pictures/any/service-blank.png" alt="" width="20" height="20" class="d-inline-block"><b>  Бланки оказания услуг</b></div>                 
+                    <div class="card-header"><img src="assets/pictures/any/service-blank.png" alt="" width="20" height="20" class="d-inline-block"><b>  Акты об оказании услуг</b></div>                 
                         <div class="card-body">
-                            <p class="card-text">Здесь находятся все бланки оказанных клиентам услуг, а также бланки проданных товаров</p>
+                            <p class="card-text">Здесь находятся все акты оказанных клиентам услуг, а также акты проданных товаров</p>
                             <a href="service.php" class="btn btn-primary">Перейти</a>
                         </div>
                     </div>
@@ -43,7 +43,7 @@
                         <div class="card-header"><img src="assets/pictures/any/material.png" alt="" width="20" height="20" class="d-inline-block"><b>  Учет материалов</b></div>              
                         <div class="card-body">
                         
-                            <p class="card-text">Здесь представлены все приходные накладные и бланки заказов, а также материалы, которые имеются на складе в данный момент</p>
+                            <p class="card-text">Здесь представлены все приходные накладные, расходы, а также материалы, которые имеются на складе в данный момент</p>
                             <a href="stock-balances.php" class="btn btn-primary">Перейти</a>
                         </div>
                     </div>

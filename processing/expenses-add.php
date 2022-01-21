@@ -21,7 +21,7 @@
         mysqli_commit($connect_main);
         header('Location: ../expenses.php');
     }
-    catch(mysqli_sql_exception $exeption){ // ловит ошибки в синтаксисе не то, что нужно
+    catch(mysqli_sql_exception $exeption){ 
         $_SESSION['error'] = TRUE;
         mysqli_rollback($connect_main);
         header('Location: ../expenses.php');

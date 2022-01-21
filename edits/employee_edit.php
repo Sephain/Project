@@ -4,15 +4,10 @@
     require_once('../php/connect.php');
     if (!$_SESSION['user']) { header('Location: ../index.php'); }
     require_once('../php/connect-main.php');
-    if (isset($_GET['order_id'])) {$order_id = $_GET['order_id']; }
-    // echo($order_id);
-    // echo($_GET['id']);
-    $id = $_GET['id'];
-    
 
+    $id = $_GET['id'];
 
     $select_text="SELECT * FROM `employee`  INNER JOIN `position` ON `employee`.`position`=`position`.`id` WHERE `employee`.`id`=$id";
-
     $select_query = mysqli_query($connect_main, $select_text);
     $select = mysqli_fetch_assoc($select_query);
 
@@ -20,12 +15,15 @@
         print_r($_POST);
         $name = $_POST['Name'];
         $last_name = $_POST['Last_name'];
+        $middle_name = $_POST['middle_name'];
         $adress = $_POST['Adress'];
         $contacts = $_POST['Contacts'];
         $position = $_POST['Position'];
         $salary = $_POST['Salary'];
 
-        mysqli_query($connect_main, "UPDATE `employee` SET `first_name`='$name', `last_name`='$last_name', `adress`='$adress', `contacts`='$contacts', `position`='$position', `salary`='$salary' WHERE `employee`.`id`=$id");
+        mysqli_query($connect_main, "UPDATE `employee` 
+        SET `first_name`='$name', `last_name`='$last_name', `middle_name`='$middle_name', `adress`='$adress', `contacts`='$contacts', `position`='$position', `salary`='$salary' 
+        WHERE `employee`.`id`=$id");
         header("Location: ../employee.php");
     }
 ?>
@@ -82,6 +80,10 @@
                     <div class="mb-3">
                         <label for="two" class="form-label">Фамилия</label>
                         <input class="form-control" type="text" id="two" name="Last_name" value="<?=$select['last_name']?>">                   
+                    </div>
+                    <div class="mb-3">
+                        <label for="two" class="form-label">Отчество</label>
+                        <input class="form-control" type="text" id="two" name="middle_name" value="<?=$select['middle_name']?>">                   
                     </div>
                     <div class="mb-3">
                         <label for="four" class="form-label">Адрес</label>

@@ -36,7 +36,6 @@
     $select_query = mysqli_query($connect_main, $select_text) or die(mysqli_error($connect_main));
     $new = mysqli_fetch_all($select_query);
     
-
     // pagination =)
     $count_query = mysqli_query($connect_main, "SELECT COUNT(*) as count FROM `clients`") or die(mysqli_error($connect_main));
     $count = mysqli_fetch_assoc($count_query)['count'];
@@ -55,7 +54,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles/stl.css">   
-    <title>Клиенты</title>
+    <title>Список клиентов</title>
 </head>
 <body>
 
@@ -88,7 +87,7 @@
     <section>
         <div class="container-md">
             <div class="mt-4 mb-4">
-                <h3><p>Раздел "Клиенты"</p></h3>
+                <h3><p>Список клиентов</p></h3>
                 <p class="fst-italic">Здесь представлен список клиентов, которые уже были добавлены в базу данных. </p>
                 <p class="fst-italic">Вы можете добавить нового клиента, либо изменить или удалить старого.</p>
                 <hr>

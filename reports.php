@@ -2,7 +2,7 @@
 <?php
 
 
-session_start();
+    session_start();
     require_once('php/connect.php');
     if (!$_SESSION['user']) { header('Location: ../index.php'); }
     require_once('php/connect-main.php');
@@ -42,12 +42,14 @@ session_start();
                 SUM(
                     `service_provision`.`count` * `service_provision`.`price`
                 ) AS SUM
-            
                 FROM
                     `service_provision`
-                INNER JOIN `materials` ON `materials`.`id`=`service_provision`.`service_id`
-                WHERE `materials`.`category_id`=1
+                INNER JOIN `materials` ON `materials`.`id` = `service_provision`.`service_id`
+                INNER JOIN `service_list` ON `service_list`.`id`=`service_provision`.`service_list_id`
+                WHERE
+                    `materials`.`category_id` = 1 AND `service_list`.`date` >= '$startPeriod' AND `service_list`.`date` <= '$endPeriod'
                 "));
+
 
                 $goodsIncome = mysqli_fetch_assoc(mysqli_query($connect_main, "SELECT
                 SUM(
@@ -56,7 +58,8 @@ session_start();
                 FROM
                     `service_provision`
                 INNER JOIN `materials` ON `materials`.`id`=`service_provision`.`service_id`
-                WHERE `materials`.`category_id`!=1
+                INNER JOIN `service_list` ON `service_list`.`id`=`service_provision`.`service_list_id`
+                WHERE `materials`.`category_id`!=1 AND `service_list`.`date` >= '$startPeriod' AND `service_list`.`date` <= '$endPeriod'
                 "));
 
                 $incomeTotal = mysqli_fetch_all(mysqli_query($connect_main, 
@@ -66,6 +69,7 @@ session_start();
                 FROM
                     `service_provision`
                 INNER JOIN `service_list` ON `service_provision`.`service_list_id`=`service_list`.`id`
+                WHERE `service_list`.`date` >= '$startPeriod' AND `service_list`.`date` <= '$endPeriod'
                 GROUP BY `service_list`.`date`"
                 ));
 
@@ -83,6 +87,7 @@ session_start();
                 FROM
                     `orders_content`
                 INNER JOIN `orders` ON `orders`.`id`=`orders_content`.`orders_id`
+                WHERE `orders`.`date` >= '$startPeriod' AND `orders`.`date` <= '$endPeriod' 
                 GROUP BY `orders`.`date`"
                 ));
 
@@ -174,7 +179,7 @@ session_start();
 
     <section>
         <div class="container-md mt-4 mb-4">
-            <h3>Отчет по о финансовых результатах</h3>
+            <h3>Отчет по финансовым результатам</h3>
             <div class="mt-4 mb-4">
                 <p class="fst-italic">Здесь вы можете ознакомиться с итогами деятельности предприятия за выбранный период времени. </p>
                 <hr>

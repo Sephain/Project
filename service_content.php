@@ -29,7 +29,7 @@
         $category = $_POST['category'];
         $price = $_POST['price'];
 
-        mysqli_query($connect_main, "INSERT INTO `materials` (`name`, `category_id`) VALUES ('$serviceName', '$category')") or die(mysqli_error($connect_main));
+        mysqli_query($connect_main, "INSERT INTO `materials` (`name`, `price`, `category_id`) VALUES ('$serviceName', '$price', '$category')") or die(mysqli_error($connect_main));
         header("Location: ../service_content.php?service_list_id=$service_list_id");
     }
 
@@ -61,7 +61,8 @@
     INNER JOIN `materials` ON `materials`.`id`=`service_provision`.`service_id`
     INNER JOIN `service_list` ON `service_list`.`id`=`service_provision`.`service_list_id`
     WHERE `service_list`.`id`=$service_list_id
-    ORDER BY `service_provision`.`id`";
+    ORDER BY `service_provision`.`id`
+    LIMIT $startFrom, $recordOnPage";
 
     $select_query = mysqli_query($connect_main, $select_text) or die(mysqli_error($connect_main));
     $new = mysqli_fetch_all($select_query);
@@ -88,7 +89,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles/stl.css">   
-    <title>Бланк оказания услуг</title>
+    <title>Акт об оказании услуг</title>
 </head>
 <body>
 
@@ -122,7 +123,7 @@
         
         <div class="container-md">
             <div class="mt-4 mb-4">
-                    <h3><p>Бланк оказания услуг № <?= $service_data['id'] ?></p></h3>
+                    <h3><p>Акт об оказании услуг № <?= $service_data['id'] ?></p></h3>
                     <p>ФИО сотрудника, оказавший услугу: <?= $service_data['name'] ?></p>
                     <p>ФИО клиента: <?= $service_data['client_name'] ?></p>
                     <p>Дата оказания услуг: <?= $service_data['ddate'] ?></p>
@@ -133,7 +134,7 @@
                 <div class="row">
                     <div class="col-md-5 mb-4">
                         <a data-bs-toggle="modal" data-bs-target="#addModal"><button class="btn btn-primary">Добавить запись</button></a>
-                        <a href="service.php"><button class="btn btn-success">Закончить формирование услуг</button></a>
+                        <a href="service.php"><button class="btn btn-success">Закончить формирование бланка</button></a>
                     </div>
                     <div class="col-md-7 mb-4">
                         <a data-bs-toggle="modal" data-bs-target="#priceList"><button class="btn btn-secondary float-end">Открыть прайс-лист</button></a>

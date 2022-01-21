@@ -11,6 +11,7 @@
 
     if (isset($_POST['bbtn'])){
         $service_id = $_POST['service'];
+        $emp = $_POST['emp'];
         $temp = mysqli_fetch_assoc(mysqli_query($connect_main, "SELECT
         `service_list`.`date` as date
         FROM
@@ -19,7 +20,8 @@
         WHERE `service_provision`.`id`=$service_id")); 
         $date=$temp['date'];
     
-        $q_text = "UPDATE `waste_list` SET `service_id`='$service_id', `date`='$date' WHERE `waste_list`.`id`='$id'";
+        $q_text = "INSERT INTO `waste_list` (`service_id`, `date`, `employee_id`) 
+        VALUES ('$service_id', '$date', '$emp')";
         mysqli_query($connect_main, $q_text) or die(mysqli_error($connect_main));
         header('Location: ../waste_list.php');
     }
@@ -88,6 +90,18 @@
                                 foreach ($res as $item) {
                                     if ($item[0] == $data['service_id']) echo("<option selected value=$item[0]>$item[0] - $item[1], $item[2]</option>");
                                     else echo("<option value=$item[0]>$item[0] - $item[1], $item[2]</option>");
+                                }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="one" class="form-label">Выберите сотрудника</label>
+                        <select class="form-select" aria-label="Default select example" name="emp" id="one">
+                            <?php 
+                                $emp_q = mysqli_query($connect_main, "SELECT * FROM `employee` WHERE `position` = 3");
+                                $res = mysqli_fetch_all($emp_q);
+                                foreach ($res as $item) {
+                                    echo("<option value=$item[0]>$item[2] $item[1] $item[3]</option>");
                                 }
                             ?>
                         </select>

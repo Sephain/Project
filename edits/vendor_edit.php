@@ -5,8 +5,7 @@
     if (!$_SESSION['user']) { header('Location: ../index.php'); }
     require_once('../php/connect-main.php');
     if (isset($_GET['order_id'])) {$order_id = $_GET['order_id']; }
-    // echo($order_id);
-    // echo($_GET['id']);
+
     $id = $_GET['id'];
     
 

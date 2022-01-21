@@ -42,10 +42,9 @@
     LIMIT $startFrom,$recordOnPage";
     $select_query = mysqli_query($connect_main, $select_text);
     $new = mysqli_fetch_all($select_query);
-    
 
     // pagination =)
-    $count_query = mysqli_query($connect_main, "SELECT COUNT(*) as count FROM `stock_balances`") or die(mysqli_error($connect));
+    $count_query = mysqli_query($connect_main, "SELECT COUNT(*) as count FROM `stock_balances`") or die(mysqli_error($connect_main));
     $count = mysqli_fetch_assoc($count_query)['count'];
     $pagesCount = ceil($count / $recordOnPage);
 
@@ -96,7 +95,7 @@
     <section>
         <div class="container-md">
             <div class="mt-4 mb-4">
-                <h3><p>Раздел "Товары и материалы в наличии"</p></h3>
+                <h3><p>Товары и материалы в наличии</p></h3>
 
                 <p class="fst-italic">Здесь представлен список всех товаров и материалов, которыми располагает фотоцентр на данный момент. </P>
                 <p class="fst-italic">Обратите внимание, если на складе будет недостаточно какого-го либо материала или он вовсе зкончился, рядом с ним появится характерный значок восклицательного знака.</p>

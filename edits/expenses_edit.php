@@ -9,7 +9,6 @@
     
     $data = mysqli_fetch_all(mysqli_query($connect_main, "SELECT * FROM `expenses` WHERE `expenses`.`id`='$id'"));
 
-
     if (isset($_POST['bbtn'])){
         $old_mat = $data[0][1];
         $old_count=$data[0][2];
@@ -36,7 +35,7 @@
             mysqli_commit($connect_main);
             header('Location: ../expenses.php');
         }
-        catch(mysqli_sql_exception $exeption){ // ловит ошибки в синтаксисе не то, что нужно
+        catch(mysqli_sql_exception $exeption){ 
             $_SESSION['error'] = TRUE;
             mysqli_rollback($connect_main);
             header('Location: ../expenses.php');
