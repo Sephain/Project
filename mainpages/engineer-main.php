@@ -5,32 +5,34 @@
         <div class="container justify-content-center">
             <div class="row mt-4 mb-4">
                 <div class="col-md-4">
-                    <div class="card my-card" style="width: 20rem; margin-left:auto; margin-right:auto">       
-                        <div class="card-header"><img src="assets/pictures/any/user.png" alt="" width="20" height="20" class="d-inline-block"><b>  Управление учетными записями</b></div>              
-                        <div class="card-body">
-                        
-                            <p class="card-text">Здесь представлен список всех сотрудников, работающих на предприятии, а также управление учетными записями</p>
-                            <a href="employee.php" class="btn btn-primary">Перейти</a>
+                    <div class="card my-card" style="width: 15rem; margin-left:auto; margin-right:auto">       
+                                   
+                        <div class="card-body justify-content-center text-center">
+                                
+                            
+                            <a href="employee.php"><img src="assets/pictures/any/user2.png" alt="" width="200" height="200" class="d-inline-block"><b>Управление пользователями</b></a>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-4">
-                    <div class="card my-card" style="width: 20rem; margin-left:auto; margin-right:auto ">    
-                    <div class="card-header"><img src="assets/pictures/any/service-blank.png" alt="" width="20" height="20" class="d-inline-block"><b>  Акты об оказании услуг</b></div>                 
-                        <div class="card-body">
-                            <p class="card-text">Здесь находятся все акты оказанных клиентам услуг, а также акты проданных товаров</p>
-                            <a href="service.php" class="btn btn-primary">Перейти</a>
+                    <div class="card my-card" style="width: 15rem; margin-left:auto; margin-right:auto">       
+                                     
+                        <div class="card-body justify-content-center text-center">
+                                
+                            
+                            <a href="service.php"><img src="assets/pictures/any/folder.png" alt="" width="200" height="200" class="d-inline-block"><b>Акты об оказанных услугах</b></a>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-4">
-                    <div class="card my-card" style="width: 20rem; margin-left:auto; margin-right:auto">   
-                        <div class="card-header"><img src="assets/pictures/any/vendor.png" alt="" width="20" height="20" class="d-inline-block"><b>  Список поставщиков</b></div>               
-                        <div class="card-body">
-                            <p class="card-text">Раздел, в котором представлен список всех поставщиков, с которыми сотрудничает фотоцентр</p>
-                            <a href="vendor.php" class="btn btn-primary">Перейти</a>
+                    <div class="card my-card" style="width: 15rem; margin-left:auto; margin-right:auto">       
+                                    
+                        <div class="card-body justify-content-center text-center">
+                                
+                            
+                            <a href="vendor.php"><img src="assets/pictures/any/officer.png" alt="" width="200" height="200" class="d-inline-block"><b>Поставщики</b></a>
                         </div>
                     </div>
                 </div>
@@ -39,32 +41,35 @@
 
             <div class="row mt-4 mb-4">
                 <div class="col-md-4">
-                    <div class="card my-card" style="width: 20rem; margin-left:auto; margin-right:auto">       
-                        <div class="card-header"><img src="assets/pictures/any/material.png" alt="" width="20" height="20" class="d-inline-block"><b>  Учет материалов</b></div>              
-                        <div class="card-body">
-                        
-                            <p class="card-text">Здесь представлены все приходные накладные, расходы, а также материалы, которые имеются на складе в данный момент</p>
-                            <a href="stock-balances.php" class="btn btn-primary">Перейти</a>
+                    <div class="card my-card" style="width: 15rem; margin-left:auto; margin-right:auto">       
+                                   
+                        <div class="card-body justify-content-center text-center">
+                                
+                            
+                            <a href="stock-balances.php"><img src="assets/pictures/any/warehouse.png" alt="" width="200" height="200" class="d-inline-block"><b>Складской учет</b></a>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-4">
-                    <div class="card my-card" style="width: 20rem; margin-left:auto; margin-right:auto ">    
-                    <div class="card-header"><img src="assets/pictures/any/waste.png" alt="" width="20" height="20" class="d-inline-block"><b>  Утилизация отходов</b></div>                 
-                        <div class="card-body">
-                            <p class="card-text">Здесь находятся все списки токсичных отходов, которые были утилизированы и переданы соответствующим органам</p>
-                            <a href="waste_list.php" class="btn btn-primary">Перейти</a>
+                    <div class="card my-card" style="width: 15rem; margin-left:auto; margin-right:auto">       
+                                     
+                        <div class="card-body justify-content-center text-center">
+                                
+                            
+                            <a href="waste_list.php"><img src="assets/pictures/any/garbage.png" alt="" width="200" height="200" class="d-inline-block"><b>Утилизация отходов</b></a>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-4">
-                    <div class="card my-card" style="width: 20rem; margin-left:auto; margin-right:auto">   
-                        <div class="card-header"><img src="assets/pictures/any/account.png" alt="" width="20" height="20" class="d-inline-block"><b>  Бухгалтерия</b></div>               
-                        <div class="card-body">
-                            <p class="card-text">Здесь находятся доходно-расходные отчетности и иные документы, описывающие итоги деятельности фотоцентра</p>
-                            <a href="reports.php" class="btn btn-primary">Перейти</a>
+                    <div class="card my-card" style="width: 15rem; margin-left:auto; margin-right:auto">       
+                                    
+                        <div class="card-body justify-content-center text-center">
+                        <a href="reports.php">   
+                            <img src="assets/pictures/any/account.png" alt="" width="200" height="200" class="d-inline-block">
+                            <b>Бухгалтерия</b>
+                        </a>
                         </div>
                     </div>
                 </div>
