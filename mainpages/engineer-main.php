@@ -2,7 +2,7 @@
         <h3 class="mb-4">Добро пожаловать!</h3>
         <p class="fst-italic">На главной странице можно получить доступ ко всем основным разделам, которые необходимы Вам для работы.</p> 
         <hr>
-        <div class="container justify-content-center">
+        <div class="container justify-content-center ">
             <div class="row mt-4 mb-4">
                 <div class="col-md-4">
                     <div class="card my-card" style="width: 15rem; margin-left:auto; margin-right:auto">       
@@ -10,7 +10,7 @@
                         <div class="card-body justify-content-center text-center">
                                 
                             
-                            <a href="employee.php"><img src="assets/pictures/any/user2.png" alt="" width="200" height="200" class="d-inline-block"><b>Управление пользователями</b></a>
+                            <a href="employee.php"><img src="assets/pictures/any/user2.png" alt="" width="170" height="170" class="d-inline-block"><b>Сотрудники</b></a>
                         </div>
                     </div>
                 </div>
@@ -21,7 +21,7 @@
                         <div class="card-body justify-content-center text-center">
                                 
                             
-                            <a href="service.php"><img src="assets/pictures/any/folder.png" alt="" width="200" height="200" class="d-inline-block"><b>Акты об оказанных услугах</b></a>
+                            <a href="service.php"><img src="assets/pictures/any/folder.png" alt="" width="170" height="170" class="d-inline-block"><b>Акты об оказанных услугах</b></a>
                         </div>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
                         <div class="card-body justify-content-center text-center">
                                 
                             
-                            <a href="vendor.php"><img src="assets/pictures/any/officer.png" alt="" width="200" height="200" class="d-inline-block"><b>Поставщики</b></a>
+                            <a href="vendor.php"><img src="assets/pictures/any/officer.png" alt="" width="170" height="170" class="d-inline-block"><b>Список поставщиков</b></a>
                         </div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                         <div class="card-body justify-content-center text-center">
                                 
                             
-                            <a href="stock-balances.php"><img src="assets/pictures/any/warehouse.png" alt="" width="200" height="200" class="d-inline-block"><b>Складской учет</b></a>
+                            <a href="stock-balances.php"><img src="assets/pictures/any/warehouse.png" alt="" width="175" height="170" class="d-inline-block"><b>Учет материалов</b></a>
                         </div>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                         <div class="card-body justify-content-center text-center">
                                 
                             
-                            <a href="waste_list.php"><img src="assets/pictures/any/garbage.png" alt="" width="200" height="200" class="d-inline-block"><b>Утилизация отходов</b></a>
+                            <a href="waste_list.php"><img src="assets/pictures/any/garbage.png" alt="" width="170" height="170" class="d-inline-block"><b>Утилизация отходов</b></a>
                         </div>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                                     
                         <div class="card-body justify-content-center text-center">
                         <a href="reports.php">   
-                            <img src="assets/pictures/any/account.png" alt="" width="200" height="200" class="d-inline-block">
+                            <img src="assets/pictures/any/account.png" alt="" width="170" height="170" class="d-inline-block">
                             <b>Бухгалтерия</b>
                         </a>
                         </div>

@@ -8,13 +8,13 @@
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="employee.php">Управление учетными записями</a>
+                    <a class="nav-link" aria-current="page" href="employee.php">Сотрудники</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="vendor.php">Список поставщиков</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="service.php">Бланки оказания услуг</a>
+                    <a class="nav-link" href="service.php">Акты об оказании услуг</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="reports.php">Бухгалтерия</a>
