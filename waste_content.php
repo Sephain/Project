@@ -9,7 +9,7 @@
     // find this service lsit
     $find_waste_list_text="SELECT `waste_list`.`id` AS id, `waste_list`.`date` AS date, `waste_list`.`service_id` AS service_id, CONCAT(`employee`.`last_name`, ' ', `employee`.`first_name`, ' ', `employee`.`middle_name`) AS name FROM `waste_list` INNER JOIN `employee` ON `employee`.`id`=`waste_list`.`employee_id` WHERE `waste_list`.`id`=$waste_list_id";
     $waste_list_data = mysqli_fetch_assoc( mysqli_query($connect_main, $find_waste_list_text));
-
+    $dd = date("d.m.y",  strtotime($waste_list_data['date']));
     // query for deleting
     if (isset($_GET['del'])) {
         $id = ($_GET['del']);
@@ -79,7 +79,7 @@
         
         <div class="container-md">
             <div class="mt-4 mb-4">
-                    <h3><p>Акт утилизации отходов № <?= $waste_list_data['id'] ?></p></h3>
+                    <h3><p>Акт утилизации отходов № <?= $waste_list_data['id'] ?> от <?= $dd ?> г.</p></h3>
                     <p>Дата формирования бланка: <?= $waste_list_data['date'] ?></p>
                     <p>Номер оказанной услуги: <?= $waste_list_data['service_id'] ?></p>
                     <p>Сотрудник, ответственный за утилизацию: <?= $waste_list_data['name'] ?></p>

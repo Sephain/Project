@@ -74,7 +74,7 @@
                             <label for="one" class="form-label">Категория</label>
                             <select class="form-select" aria-label="Default select example" name="newcategory" id="one">
                                 <?php 
-                                    $emp_q = mysqli_query($connect_main, "SELECT * FROM `category` WHERE `id` != 1");
+                                    $emp_q = mysqli_query($connect_main, "SELECT * FROM `category`");
                                     $res = mysqli_fetch_all($emp_q);
                                     foreach ($res as $item) {
                                         if ($item[0] == $old_category_id) echo("<option selected value=$item[0]>$item[1]</option>");

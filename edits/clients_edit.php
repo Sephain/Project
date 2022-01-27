@@ -18,9 +18,10 @@
         print_r($_POST);
         $name = $_POST['Name'];
         $last_name = $_POST['Last_name'];
+        $mid_name = $_POST['middle_name'];
         $contacts = $_POST['Contacts'];
 
-        mysqli_query($connect_main, "UPDATE `clients` SET `first_name`='$name', `last_name`='$last_name', `contacts`='$contacts' WHERE `id`='$id'");
+        mysqli_query($connect_main, "UPDATE `clients` SET `first_name`='$name', `last_name`='$last_name', `middle_name`='$mid_name', `contacts`='$contacts' WHERE `id`='$id'");
         header("Location: ../clients.php");
     }
 ?>
@@ -77,6 +78,10 @@
                     <div class="mb-3">
                         <label for="two" class="form-label">Фамилия</label>
                         <input class="form-control" type="text" id="two" name="Last_name" value="<?=$select['last_name']?>">                   
+                    </div>
+                    <div class="mb-3">
+                        <label for="two" class="form-label">Отчество</label>
+                        <input class="form-control" type="text" id="two" name="middle_name" value="<?=$select['middle_name']?>">                   
                     </div>
                     <div class="mb-3">
                         <label for="five" class="form-label">Контакты</label>

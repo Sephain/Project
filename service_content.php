@@ -22,6 +22,9 @@
     INNER JOIN `employee` ON `employee`.`id`=`service_list`.`employee_id`
     WHERE `service_list`.`id`=$service_list_id";
     $service_data = mysqli_fetch_assoc( mysqli_query($connect_main, $find_service_text));
+    $adate = $service_data['ddate'];
+    $dd = (date("d.m.y", strtotime($adate)));
+    // $adate = date("d.m.y", $adate);
 
     //add new service
     if (isset($_POST['service-add'])){
@@ -123,7 +126,7 @@
         
         <div class="container-md">
             <div class="mt-4 mb-4">
-                    <h3><p>Акт об оказании услуг № <?= $service_data['id'] ?></p></h3>
+                    <h3><p>Акт об оказании услуг № <?= $service_data['id'] ?> от <?= $dd ?> г.</p></h3>
                     <p>ФИО сотрудника, оказавший услугу: <?= $service_data['name'] ?></p>
                     <p>ФИО клиента: <?= $service_data['client_name'] ?></p>
                     <p>Дата оказания услуг: <?= $service_data['ddate'] ?></p>
@@ -134,7 +137,7 @@
                 <div class="row">
                     <div class="col-md-5 mb-4">
                         <a data-bs-toggle="modal" data-bs-target="#addModal"><button class="btn btn-primary">Добавить запись</button></a>
-                        <a href="service.php"><button class="btn btn-success">Закончить формирование бланка</button></a>
+                        <a href="service.php"><button class="btn btn-success">Закончить формирование</button></a>
                     </div>
                     <div class="col-md-7 mb-4">
                         <a data-bs-toggle="modal" data-bs-target="#priceList"><button class="btn btn-secondary float-end">Открыть прайс-лист</button></a>
@@ -150,7 +153,7 @@
                         <thead>
                             <tr>
                                 <th>№</th>
-                                <th>Название услуги</th>
+                                <th>Наименование товара или услуги</th>
                                 <th>Количество</th>
                                 <th>Цена за единицу</th>
                                 <th>Общая цена</th>

@@ -125,7 +125,7 @@
                         }
                     ?>
                 </select>
-                <a href="" class="form-text" data-bs-toggle="modal" data-bs-target="#ServiceModal" data-bs-dismiss="modal">Добавить новую услугу</a>
+               
             </div>
             <div class="mb-3">
                 <label for="three" class="form-label">Количество</label>

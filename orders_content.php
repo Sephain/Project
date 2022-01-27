@@ -144,7 +144,7 @@
                 <div class="row">
                     <div class="col-md-5 mb-4">
                         <a data-bs-toggle="modal" data-bs-target="#exampleModal"><button class="btn btn-primary">Добавить запись</button></a>
-                        <a href="orders.php"><button class="btn btn-success">Закончить формирование заказа</button></a>
+                        <a href="orders.php"><button class="btn btn-success">Закончить формирование</button></a>
                     </div>
                             
                 </div>

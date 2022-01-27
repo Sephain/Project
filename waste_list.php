@@ -50,7 +50,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles/stl.css">   
-    <title>Бланки утилизации отходов</title>
+    <title>Акты утилизации отходов</title>
 </head>
 <body>
 
@@ -83,9 +83,9 @@
     <section>
         <div class="container-md">
             <div class="mt-4 mb-4">
-                <h3><p>Бланки утилизации отходов</p></h3>
+                <h3><p>Акты утилизации отходов</p></h3>
                 <p class="fst-italic">Здесь представлен список отходов, возникающих после оказания услуг. </p>
-                <p class="fst-italic">Вы можете добавить новый бланк утилизации отходов либо ознакомиться с существующими и изменить их.</p>
+                <p class="fst-italic">Вы можете добавить новый акт утилизации отходов либо ознакомиться с существующими и изменить их.</p>
                 <hr>
             </div>
             <div class="mt-4 mb-4">
