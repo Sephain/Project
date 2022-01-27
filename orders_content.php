@@ -23,6 +23,8 @@
     ";
     $order_data = mysqli_fetch_assoc( mysqli_query($connect_main, $find_order_text));
 
+    $dd = date("d.m.y", strtotime($order_data['ddate']));
+    
     //add new mat
     if (isset($_POST['newmaterial'])) {
         $newm = $_POST['newmaterial'];
@@ -132,7 +134,7 @@
             <div class="mt-4 mb-4">
 
                 <div class="mt-4 mb-4">
-                    <h3><p>Приходная накладная № <?= $order_data['ssumber'] ?></p></h3>
+                    <h3><p>Приходная накладная № <?= $order_data['ssumber'] ?> от <?= $dd ?> г.</p></h3>
                     <p>Поставщик: <?= $order_data['vendor'] ?></p>
                     <p>Сотрудник, принявший заказ: <?= $order_data['emp'] ?></p>
                     <p>Дата заказа: <?= $order_data['ddate'] ?></p>

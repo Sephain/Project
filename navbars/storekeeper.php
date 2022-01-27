@@ -1,4 +1,4 @@
-<!-- КЛАДОВЩИК -->
+<!-- ИНЖЕНЕР -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-md">
             <a class="navbar-brand" href="mainpage.php"><img src="../assets/pictures/icon/icon.ico" alt="" width="24" height="24" class="d-inline-block align-text-top">  Главная</a>

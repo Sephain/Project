@@ -4,7 +4,7 @@
         <hr>
         <div class="container justify-content-center">
             <div class="row mt-4 mb-4">
-                <div class="col-md-4">
+               
 
                 <div class="col-md-4">
                     <div class="card my-card" style="width: 15rem; margin-left:auto; margin-right:auto">       
@@ -28,7 +28,18 @@
                     </div>
                 </div>
 
-            </div>
+                <div class="col-md-4">
+                    <div class="card my-card" style="width: 15rem; margin-left:auto; margin-right:auto">       
+                                     
+                        <div class="card-body justify-content-center text-center">
+                                
+                            
+                            <a href="waste_list.php"><img src="assets/pictures/any/garbage.png" alt="" width="200" height="200" class="d-inline-block"><b>Утилизация отходов</b></a>
+                        </div>
+                    </div>
+                </div>
+
+            
 
         </div>
 
